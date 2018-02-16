@@ -3,8 +3,8 @@ package com.udacity.sandwichclub;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,8 +15,6 @@ import com.squareup.picasso.Picasso;
 import com.udacity.sandwichclub.model.Sandwich;
 import com.udacity.sandwichclub.utils.JsonUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
@@ -70,39 +68,43 @@ public class DetailActivity extends AppCompatActivity {
 
     private void populateUI(Sandwich sandwich) {
         TextView originTv = findViewById(R.id.origin_tv);
-        originTv.setText(sandwich.getPlaceOfOrigin());
-
-        // todo empty strings' visibility
-
+        TextView originLabel = findViewById(R.id.origin_label);
+        checkVisibilityAndSetText(sandwich.getPlaceOfOrigin(), originTv, originLabel);
+       // originTv.setText(sandwich.getPlaceOfOrigin());
 
         TextView alsoKnowTv = findViewById(R.id.also_known_tv);
         TextView alsoKnowLabel = findViewById(R.id.also_known_label);
-        String[] alsoKnowArray = sandwich.getAlsoKnownAs().toArray(new String[0]);
-        if (alsoKnowArray.length == 0){
-            alsoKnowTv.setVisibility(View.GONE);
-            alsoKnowLabel.setVisibility(View.GONE);
-        }else{
-            alsoKnowTv.setVisibility(View.VISIBLE);
-            alsoKnowLabel.setVisibility(View.VISIBLE);
-            alsoKnowTv.setText(Arrays.toString(alsoKnowArray));
-        }
+        List<String> alsoKnowArray = sandwich.getAlsoKnownAs();
+        String alsoKnownText = join(alsoKnowArray);
+        checkVisibilityAndSetText(alsoKnownText, alsoKnowTv, alsoKnowLabel);
+       // alsoKnowTv.setText(alsoKnownText);
 
         TextView descriptionTv = findViewById(R.id.description_tv);
-        descriptionTv.setText(sandwich.getDescription());
+        TextView descriptionLabel = findViewById(R.id.description_label);
+        checkVisibilityAndSetText(sandwich.getDescription(), descriptionTv, descriptionLabel);
+        // descriptionTv.setText(sandwich.getDescription());
 
         TextView ingredientsTv = findViewById(R.id.ingredients_tv);
         TextView ingredientsLabel = findViewById(R.id.ingredients_label);
-        // get ingredients list and convert it to string array
-        String[] ingredientsArray = sandwich.getIngredients().toArray(new String[0]);
-        if(ingredientsArray.length == 0){
-            ingredientsTv.setVisibility(View.GONE);
-            ingredientsLabel.setVisibility(View.GONE);
-        } else{
-            ingredientsTv.setVisibility(View.VISIBLE);
-            ingredientsLabel.setVisibility(View.VISIBLE);
-            //todo set text
-        }
+        List<String> ingredientsArray = sandwich.getIngredients();
+        String ingredientsText = join(ingredientsArray);
+        checkVisibilityAndSetText(ingredientsText, ingredientsTv, ingredientsLabel);
+    }
 
+    /***
+     * This method checks input text, if it's empty then sets visibility of textview and corresponding textviewlabel to be GONE
+     *  otherwise sets to be VISIBLE and sets the textview text.
+     * @param text input text for textview
+     */
+    private void checkVisibilityAndSetText(String text, TextView textView, TextView textViewLabel){
+        if(TextUtils.isEmpty(text)){
+            textView.setVisibility(View.GONE);
+            textViewLabel.setVisibility(View.GONE);
+        } else{
+            textView.setVisibility(View.VISIBLE);
+            textViewLabel.setVisibility(View.VISIBLE);
+            textView.setText(text);
+        }
     }
 
     @Override
@@ -113,5 +115,25 @@ public class DetailActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * This method converts string list to string and adds separator.
+     */
+    public static String join(List<String> input) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        String separator = "";
+
+        for(String s : input) {
+
+            stringBuilder.append(separator);
+            stringBuilder.append(s);
+
+            separator = ", ";
+        }
+
+        return stringBuilder.toString();
     }
 }

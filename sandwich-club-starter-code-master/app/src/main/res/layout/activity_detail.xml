@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context="com.udacity.sandwichclub.DetailActivity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp">
 
         <ImageView
             android:id="@+id/image_iv"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="200dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
@@ -29,107 +30,98 @@
             android:id="@+id/origin_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:paddingTop="16dp"
+            android:layout_margin="8dp"
             android:text="@string/detail_place_of_origin_label"
             android:textAppearance="?android:textAppearanceMedium"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_iv" />
+            app:layout_constraintTop_toBottomOf="@+id/image_iv"
+            app:layout_constraintEnd_toStartOf="@+id/origin_tv"/>
 
         <TextView
             android:id="@+id/origin_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:paddingTop="16dp"
+            android:layout_margin="8dp"
             android:textAppearance="?android:textAppearanceMedium"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/origin_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/origin_label"
             app:layout_constraintTop_toBottomOf="@+id/image_iv"
-            tools:text="Georgia, Germany" />
+            tools:text="Georgia, Germany,Georgia, Germany,Georgia, Germany,Georgia, Germany,Georgia, Germany" />
 
         <TextView
             android:id="@+id/also_known_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:paddingTop="16dp"
+            android:layout_margin="8dp"
             android:text="@string/detail_also_known_as_label"
             android:textAppearance="?android:textAppearanceMedium"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/origin_label" />
+            app:layout_constraintTop_toBottomOf="@+id/origin_tv"
+            app:layout_constraintEnd_toStartOf="@+id/also_known_tv"/>
 
         <TextView
             android:id="@+id/also_known_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:paddingTop="16dp"
+            android:layout_margin="8dp"
             android:textAppearance="?android:textAppearanceMedium"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/also_known_label"
+            app:layout_constraintLeft_toRightOf="@+id/also_known_label"
             app:layout_constraintTop_toBottomOf="@+id/origin_tv"
-            tools:text="Some sandwich" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Some sandwich,Some sandwich,Some sandwich,Some sandwich,Some sandwich" />
 
         <TextView
             android:id="@+id/description_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:paddingTop="16dp"
+            android:layout_margin="8dp"
             android:text="@string/detail_description_label"
             android:textAppearance="?android:textAppearanceMedium"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ingredients_label"  />
+            app:layout_constraintTop_toBottomOf="@+id/ingredients_tv"
+            app:layout_constraintEnd_toStartOf="@id/description_tv"/>
 
         <TextView
             android:id="@+id/description_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:paddingTop="16dp"
+            android:layout_margin="8dp"
             android:textAppearance="?android:textAppearanceMedium"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/ingredients_label"
+            app:layout_constraintLeft_toRightOf="@+id/description_label"
             app:layout_constraintTop_toBottomOf="@+id/ingredients_tv"
-            tools:text="Common type of sandwich" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Common type of sandwich,Common type of sandwich,Common type of sandwich,Common type of sandwich" />
 
         <TextView
             android:id="@+id/ingredients_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:paddingTop="16dp"
+            android:layout_margin="8dp"
             android:text="@string/detail_ingredients_label"
             android:textAppearance="?android:textAppearanceMedium"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/also_known_label"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/also_known_tv"
+            app:layout_constraintEnd_toStartOf="@+id/ingredients_tv"/>
 
 
         <TextView
             android:id="@+id/ingredients_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:paddingTop="16dp"
+            android:layout_margin="8dp"
             android:textAppearance="?android:textAppearanceMedium"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/description_label"
+            app:layout_constraintLeft_toRightOf="@+id/ingredients_label"
             app:layout_constraintTop_toBottomOf="@+id/also_known_tv"
-            tools:text="Cheese, ketchup"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Cheese, ketchup,Cheese, ketchup,Cheese, ketchup,Cheese, ketchup,Cheese, ketchup"/>
 
 
     </android.support.constraint.ConstraintLayout>
