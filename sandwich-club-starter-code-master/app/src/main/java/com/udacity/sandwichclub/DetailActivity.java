@@ -27,8 +27,6 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         ImageView ingredientsIv = findViewById(R.id.image_iv);
 
 
@@ -70,19 +68,16 @@ public class DetailActivity extends AppCompatActivity {
         TextView originTv = findViewById(R.id.origin_tv);
         TextView originLabel = findViewById(R.id.origin_label);
         checkVisibilityAndSetText(sandwich.getPlaceOfOrigin(), originTv, originLabel);
-       // originTv.setText(sandwich.getPlaceOfOrigin());
 
         TextView alsoKnowTv = findViewById(R.id.also_known_tv);
         TextView alsoKnowLabel = findViewById(R.id.also_known_label);
         List<String> alsoKnowArray = sandwich.getAlsoKnownAs();
         String alsoKnownText = join(alsoKnowArray);
         checkVisibilityAndSetText(alsoKnownText, alsoKnowTv, alsoKnowLabel);
-       // alsoKnowTv.setText(alsoKnownText);
 
         TextView descriptionTv = findViewById(R.id.description_tv);
         TextView descriptionLabel = findViewById(R.id.description_label);
         checkVisibilityAndSetText(sandwich.getDescription(), descriptionTv, descriptionLabel);
-        // descriptionTv.setText(sandwich.getDescription());
 
         TextView ingredientsTv = findViewById(R.id.ingredients_tv);
         TextView ingredientsLabel = findViewById(R.id.ingredients_label);
@@ -119,6 +114,8 @@ public class DetailActivity extends AppCompatActivity {
 
     /**
      * This method converts string list to string and adds separator.
+     * Another way: TextUtils.join(CharSequence delimiter, Iterable tokens)
+     * example TextUtils.join(", ", ingredientsArray)
      */
     public static String join(List<String> input) {
 
