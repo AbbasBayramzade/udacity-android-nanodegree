@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Movie</string>
+    <string name="movie_image">movie image</string>
+    <string name="message_no_internet">No internet connection</string>
+    <string name="message_movie_list_empty">Movie list is empty</string>
+    <string name="star_icon">Star icon</string>
+    <string name="release_date">Release date:</string>
+    <string name="rating">Rating</string>
+    <string name="description">Description:</string>
+</resources>
