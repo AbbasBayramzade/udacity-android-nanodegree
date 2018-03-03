@@ -9,12 +9,12 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
 
-     public int id;
-     public String title;
-     public String image;
-     public String releaseDate;
-     public double rating;
-     public String description;
+    private int id;
+    private String title;
+    private String image;
+    private String releaseDate;
+    private double rating;
+    private String description;
 
     public Movie(int id, String title, String image, String releaseDate, double rating, String description) {
         this.id = id;
@@ -44,15 +44,39 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(image);
+        dest.writeInt(id);
         dest.writeString(releaseDate);
         dest.writeDouble(rating);
         dest.writeString(description);
     }
 
-    public final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
         @Override
         public Movie createFromParcel(Parcel parcel) {
             return new Movie(parcel);

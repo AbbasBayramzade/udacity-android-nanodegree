@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Movie</string>
+    <string name="app_name">Movies</string>
     <string name="movie_image">movie image</string>
     <string name="message_no_internet">No internet connection</string>
     <string name="message_movie_list_empty">Movie list is empty</string>
@@ -7,4 +7,7 @@
     <string name="release_date">Release date:</string>
     <string name="rating">Rating</string>
     <string name="description">Description:</string>
+    <string name="sort_by_rating">Sort by rating</string>
+    <string name="sort_by_popularity">Sort by popularity</string>
+    <string name="AndroidManifest_Detail">Movie Detail</string>
 </resources>

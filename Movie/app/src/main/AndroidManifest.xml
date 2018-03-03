@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.DetailActivity"
+            android:label="@string/AndroidManifest_Detail"
             android:parentActivityName=".ui.MainActivity"/>
     </application>
 

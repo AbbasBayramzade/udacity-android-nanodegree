@@ -16,11 +16,12 @@ import de.amatanat.movie.data.Movie;
  * Created by amatanat.
  */
 
+// Use this class to parse JSON string to Movie List
 public class JSONUtils {
 
     private static final String TAG = JSONUtils.class.getName();
     private static final String KEY_TITLE = "title";
-    private static final String KEY_ORI_TITLE = "original_title";
+    // private static final String KEY_ORI_TITLE = "original_title";
     private static final String KEY_MOVIE_ID = "id";
     private static final String KEY_RELEASE_DATE = "release_date";
     private static final String KEY_RATING = "vote_average";
@@ -58,8 +59,10 @@ public class JSONUtils {
                 String title = movie.optString(KEY_TITLE);
                 Log.i(TAG, "title = " + title);
                 // String originalTile = movie.optString(KEY_ORI_TITLE);
+
                 String imageEnd = movie.optString(KEY_POSTER_PATH);
                 Log.i(TAG, "imageEnd = " + imageEnd);
+                // generate image url
                 String image = "http://image.tmdb.org/t/p/w185/" + imageEnd;
 
                 int movieId = movie.optInt(KEY_MOVIE_ID);
@@ -68,11 +71,12 @@ public class JSONUtils {
                 String releaseDate = movie.optString(KEY_RELEASE_DATE);
                 Log.i(TAG, "releaseDate = " + releaseDate);
 
-                int rating = movie.optInt(KEY_RATING);
+                double rating = movie.optDouble(KEY_RATING);
                 Log.i(TAG, "rating = " + rating);
 
                 String description = movie.optString(KEY_DESCRIPTION);
                 Log.i(TAG, "description = " + description);
+
                 result.add(
                         new Movie(movieId,title, image, releaseDate, rating, description)
                 );

@@ -18,6 +18,8 @@ import de.amatanat.movie.data.Movie;
  * Created by amatanat.
  */
 
+// Use this class to perform network operations
+
 public class NetworkUtils {
 
 
