@@ -36,13 +36,10 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:scrollbarStyle="outsideOverlay"
+            android:layout_height="match_parent"
             android:paddingTop="128dp"
             android:paddingLeft="@dimen/list_side_margin"
-            android:paddingRight="@dimen/list_side_margin"
-            android:paddingBottom="28dp" />
+            android:paddingRight="@dimen/list_side_margin"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 
