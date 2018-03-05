@@ -10,4 +10,6 @@
     <string name="sort_by_rating">Sort by rating</string>
     <string name="sort_by_popularity">Sort by popularity</string>
     <string name="AndroidManifest_Detail">Movie Detail</string>
+    <string name="trailer">Trailer</string>
+    <string name="movie_trailer_play_icon">Movie trailer play icon</string>
 </resources>

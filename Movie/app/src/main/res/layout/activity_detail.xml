@@ -119,6 +119,53 @@
             app:layout_constraintTop_toBottomOf="@+id/rating_tv"
             tools:text="Some text" />
 
+        <View
+            android:id="@+id/line"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_margin="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/description_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/colorAccent"/>
+
+
+        <TextView
+            android:id="@+id/trailer_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/trailer"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/colorSecondaryText"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line" />
+
+
+        <ImageView
+            android:id="@+id/play_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_play"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/movie_trailer_play_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trailer_label"
+            app:layout_constraintEnd_toStartOf="@+id/trailer_tv"/>
+
+        <TextView
+            android:id="@+id/trailer_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/colorPrimaryText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/play_iv"
+            app:layout_constraintTop_toBottomOf="@+id/trailer_label"
+            tools:text="www.homepage.com"/>
+
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
