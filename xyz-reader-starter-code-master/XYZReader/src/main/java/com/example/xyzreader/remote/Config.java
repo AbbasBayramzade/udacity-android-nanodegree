@@ -1,6 +1,9 @@
 package com.example.xyzreader.remote;
 
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+
+import com.example.xyzreader.R;
 
 import java.net.MalformedURLException;
 import java.net.URL;

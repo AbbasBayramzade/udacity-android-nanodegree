@@ -23,15 +23,4 @@
         <item name="colorAccent">@color/theme_accent</item>
     </style>
 
-    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
-        <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-        <!--<item name="colorPrimary">@color/theme_primary</item>-->
-        <!--<item name="colorPrimaryDark">@color/theme_primary_dark</item>-->
-        <!--<item name="colorAccent">@color/theme_accent</item>-->
-    <!--</style>-->
-
-    <!--<style name="Theme.Bacon.Detail">-->
-        <!--<item name="android:statusBarColor" tools:ignore="NewApi">@android:color/transparent</item>-->
-    <!--</style>-->
-
 </resources>
