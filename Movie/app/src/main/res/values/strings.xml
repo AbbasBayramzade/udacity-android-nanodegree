@@ -6,10 +6,11 @@
     <string name="star_icon">Star icon</string>
     <string name="release_date">Release date:</string>
     <string name="rating">Rating</string>
-    <string name="description">Description:</string>
+    <string name="description">Overview</string>
     <string name="sort_by_rating">Sort by rating</string>
     <string name="sort_by_popularity">Sort by popularity</string>
     <string name="AndroidManifest_Detail">Movie Detail</string>
     <string name="trailer">Trailer</string>
     <string name="movie_trailer_play_icon">Movie trailer play icon</string>
+    <string name="message_reviews">Reviews</string>
 </resources>
