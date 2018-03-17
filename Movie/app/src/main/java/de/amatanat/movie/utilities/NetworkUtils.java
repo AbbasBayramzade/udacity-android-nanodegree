@@ -13,6 +13,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import de.amatanat.movie.data.Movie;
+import de.amatanat.movie.data.Review;
 
 /**
  * Created by amatanat.
@@ -136,5 +137,29 @@ public class NetworkUtils {
 
         // parse JSON response and return Movie list
         return JSONUtils.parseMovieJson(jsonResponse);
+    }
+
+
+    public static List<Review> fetchReviewData(String requestUrl) {
+
+        try{
+            Thread.sleep(2000);
+        }catch (InterruptedException ie){
+            Log.e("Query", "InterruptedException: " + ie);
+        }
+
+        // Create URL object
+        URL url = getUrl(requestUrl);
+
+        // Perform HTTP request to the URL and receive a JSON response back
+        String jsonResponse = null;
+        try {
+            jsonResponse = getHttpResponse(url);
+        } catch (IOException e) {
+            Log.e("Query", "Problem making the HTTP request.", e);
+        }
+
+        // parse JSON response and return Movie list
+        return JSONUtils.parseReviewJson(jsonResponse);
     }
 }

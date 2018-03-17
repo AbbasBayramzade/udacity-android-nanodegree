@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.amatanat.movie.R;
+import de.amatanat.movie.data.Review;
 
 /**
  * Created by amatanat.
@@ -17,9 +18,9 @@ import de.amatanat.movie.R;
 
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.CustomViewHolder> {
 
-    private List<String> reviews;
+    private List<Review> reviews;
 
-    public ReviewsAdapter(List<String> reviews){
+    public ReviewsAdapter(List<Review> reviews){
         this.reviews = reviews;
     }
 
@@ -35,8 +36,8 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.CustomVi
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-        holder.review.setText(reviews.get(position));
-        holder.reviewerName.setText(reviews.get(position));
+        holder.content.setText(reviews.get(position).getContent());
+        holder.author.setText(reviews.get(position).getAuthor());
     }
 
     @Override
@@ -46,14 +47,14 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.CustomVi
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView reviewerName;
-        private TextView review;
+        private TextView author;
+        private TextView content;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
 
-            reviewerName = itemView.findViewById(R.id.reviewer_name_tv);
-            review = itemView.findViewById(R.id.reviewer_text_tv);
+            author = itemView.findViewById(R.id.reviewer_name_tv);
+            content = itemView.findViewById(R.id.reviewer_text_tv);
 
         }
     }

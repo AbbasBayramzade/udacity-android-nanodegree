@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.amatanat.movie.data.Movie;
+import de.amatanat.movie.data.Review;
 
 /**
  * Created by amatanat.
@@ -29,6 +30,10 @@ public class JSONUtils {
     private static final String KEY_RESULTS = "results";
     private static final String KEY_POSTER_PATH = "poster_path";
 
+    // ----------------
+    private static final String KEY_REVIEW_AUTHOR = "author";
+    private static final String KEY_REVIEW_CONTENT = "content";
+
     public static List<Movie> parseMovieJson(String json) {
 
         if (TextUtils.isEmpty(json))
@@ -44,6 +49,43 @@ public class JSONUtils {
 
         return null;
     }
+
+    public static List<Review> parseReviewJson(String json){
+        if (TextUtils.isEmpty(json))
+            return null;
+
+        try {
+            // get jsonobject from input string
+            JSONObject jsonObject = new JSONObject(json);
+            return getReviewListFromJsonArray(jsonObject.optJSONArray(KEY_RESULTS));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    private static List<Review> getReviewListFromJsonArray(JSONArray jsonArray){
+        List<Review> result = new ArrayList<>();
+
+        if(jsonArray.length() > 0){
+            for(int i = 0; i < jsonArray.length(); i++){
+
+                JSONObject review = jsonArray.optJSONObject(i);
+                String author = review.optString(KEY_REVIEW_AUTHOR);
+                Log.i(TAG, "review author = " + author);
+
+                String content = review.optString(KEY_REVIEW_CONTENT);
+                Log.i(TAG,"review content = " + content);
+
+                result.add(new Review(author, content));
+            }
+        }
+
+        return result;
+    }
+
 
     /**
      * This method gets JSONArray as input and returns list of movies

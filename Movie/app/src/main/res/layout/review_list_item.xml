@@ -32,7 +32,7 @@
             android:layout_margin="8dp"
             android:textAppearance="?android:textAppearanceMedium"
             android:textStyle="bold"
-            tools:text="some text review" />
+            tools:text="some text content" />
 
     </LinearLayout>
 
