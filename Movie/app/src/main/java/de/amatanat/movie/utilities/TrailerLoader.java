@@ -11,11 +11,11 @@ import de.amatanat.movie.data.Model;
  * Created by amatanat.
  */
 
-public class ReviewLoader extends AsyncTaskLoader<List<Model>> {
+public class TrailerLoader extends AsyncTaskLoader<List<Model>> {
 
     private String mUrl;
 
-    public ReviewLoader(Context context, String url){
+    public TrailerLoader(Context context, String url){
         super(context);
         mUrl = url;
     }
@@ -31,6 +31,6 @@ public class ReviewLoader extends AsyncTaskLoader<List<Model>> {
             return null;
         }
 
-        return NetworkUtils.fetchReviewData(mUrl);
+        return NetworkUtils.fetchTrailerData(mUrl);
     }
 }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.amatanat.movie.data.Movie;
-import de.amatanat.movie.data.Review;
+import de.amatanat.movie.data.Model;
 
 /**
  * Created by amatanat.
@@ -34,6 +34,11 @@ public class JSONUtils {
     private static final String KEY_REVIEW_AUTHOR = "author";
     private static final String KEY_REVIEW_CONTENT = "content";
 
+    // ------------------
+    private static final String KEY_TRAILER_KEY = "key";
+    private static final String KEY_TRAILER_NAME = "name";
+
+
     public static List<Movie> parseMovieJson(String json) {
 
         if (TextUtils.isEmpty(json))
@@ -50,7 +55,7 @@ public class JSONUtils {
         return null;
     }
 
-    public static List<Review> parseReviewJson(String json){
+    public static List<Model> parseReviewJson(String json){
         if (TextUtils.isEmpty(json))
             return null;
 
@@ -66,8 +71,8 @@ public class JSONUtils {
     }
 
 
-    private static List<Review> getReviewListFromJsonArray(JSONArray jsonArray){
-        List<Review> result = new ArrayList<>();
+    private static List<Model> getReviewListFromJsonArray(JSONArray jsonArray){
+        List<Model> result = new ArrayList<>();
 
         if(jsonArray.length() > 0){
             for(int i = 0; i < jsonArray.length(); i++){
@@ -79,7 +84,42 @@ public class JSONUtils {
                 String content = review.optString(KEY_REVIEW_CONTENT);
                 Log.i(TAG,"review content = " + content);
 
-                result.add(new Review(author, content));
+                result.add(new Model(author, content));
+            }
+        }
+
+        return result;
+    }
+
+
+    public static List<Model> parseTrailerJson(String json){
+        if (TextUtils.isEmpty(json))
+            return null;
+
+        try {
+            // get jsonobject from input string
+            JSONObject jsonObject = new JSONObject(json);
+            return getTrailerListFromJsonArray(jsonObject.optJSONArray(KEY_RESULTS));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private static List<Model> getTrailerListFromJsonArray(JSONArray jsonArray){
+        List<Model> result = new ArrayList<>();
+
+        if(jsonArray.length() > 0){
+            for(int i = 0; i < jsonArray.length(); i++){
+
+                JSONObject review = jsonArray.optJSONObject(i);
+                String name = review.optString(KEY_TRAILER_NAME);
+
+                String key = review.optString(KEY_TRAILER_KEY);
+                Log.i(TAG,"trailer key = " + key);
+
+                result.add(new Model(name, key));
             }
         }
 

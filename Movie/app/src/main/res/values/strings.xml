@@ -13,4 +13,5 @@
     <string name="trailer">Trailer</string>
     <string name="movie_trailer_play_icon">Movie trailer play icon</string>
     <string name="message_reviews">Reviews</string>
+    <string name="text_trailer_image">Trailer image</string>
 </resources>

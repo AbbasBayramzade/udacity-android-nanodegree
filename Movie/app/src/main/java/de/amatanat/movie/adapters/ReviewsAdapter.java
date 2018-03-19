@@ -1,4 +1,4 @@
-package de.amatanat.movie.Adapters;
+package de.amatanat.movie.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.amatanat.movie.R;
-import de.amatanat.movie.data.Review;
+import de.amatanat.movie.data.Model;
 
 /**
  * Created by amatanat.
@@ -18,9 +18,9 @@ import de.amatanat.movie.data.Review;
 
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.CustomViewHolder> {
 
-    private List<Review> reviews;
+    private List<Model> reviews;
 
-    public ReviewsAdapter(List<Review> reviews){
+    public ReviewsAdapter(List<Model> reviews){
         this.reviews = reviews;
     }
 
@@ -37,7 +37,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.CustomVi
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         holder.content.setText(reviews.get(position).getContent());
-        holder.author.setText(reviews.get(position).getAuthor());
+        holder.name.setText(reviews.get(position).getName());
     }
 
     @Override
@@ -47,13 +47,13 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.CustomVi
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView author;
+        private TextView name;
         private TextView content;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
 
-            author = itemView.findViewById(R.id.reviewer_name_tv);
+            name = itemView.findViewById(R.id.reviewer_name_tv);
             content = itemView.findViewById(R.id.reviewer_text_tv);
 
         }
