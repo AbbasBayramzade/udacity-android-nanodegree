@@ -11,6 +11,15 @@
 
         <include layout="@layout/detail_top_layout"/>
 
+        <Button
+            android:id="@+id/favorite_bn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_to_favorite"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:background="@color/colorAccent"/>
+
         <TextView
             android:id="@+id/movie_overview_label_tv"
             style="@style/styleTextView"

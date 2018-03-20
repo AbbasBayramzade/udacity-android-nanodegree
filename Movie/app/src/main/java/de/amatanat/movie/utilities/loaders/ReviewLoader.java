@@ -1,20 +1,22 @@
-package de.amatanat.movie.utilities;
+package de.amatanat.movie.utilities.loaders;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
 import java.util.List;
 
-import de.amatanat.movie.data.Movie;
+import de.amatanat.movie.data.Model;
+import de.amatanat.movie.utilities.NetworkUtils;
 
 /**
  * Created by amatanat.
  */
 
-public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
+public class ReviewLoader extends AsyncTaskLoader<List<Model>> {
+
     private String mUrl;
 
-    public MovieLoader(Context context, String url){
+    public ReviewLoader(Context context, String url){
         super(context);
         mUrl = url;
     }
@@ -24,13 +26,12 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
     }
 
     @Override
-    public List<Movie> loadInBackground() {
-
+    public List<Model> loadInBackground() {
         // check if string url is null or not
         if (mUrl == null){
             return null;
         }
 
-        return NetworkUtils.fetchData(mUrl);
+        return NetworkUtils.fetchReviewData(mUrl);
     }
 }

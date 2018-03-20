@@ -22,6 +22,9 @@
         <activity android:name=".ui.DetailActivity"
             android:label="@string/AndroidManifest_Detail"
             android:parentActivityName=".ui.MainActivity"/>
+        <provider
+        android:authorities="de.am.popular"
+        android:name=".data.db.MovieProvider"/>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package de.amatanat.movie.utilities;
+package de.amatanat.movie.utilities.loaders;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
@@ -6,16 +6,17 @@ import android.content.Context;
 import java.util.List;
 
 import de.amatanat.movie.data.Model;
+import de.amatanat.movie.utilities.NetworkUtils;
 
 /**
  * Created by amatanat.
  */
 
-public class ReviewLoader extends AsyncTaskLoader<List<Model>> {
+public class TrailerLoader extends AsyncTaskLoader<List<Model>> {
 
     private String mUrl;
 
-    public ReviewLoader(Context context, String url){
+    public TrailerLoader(Context context, String url){
         super(context);
         mUrl = url;
     }
@@ -31,6 +32,6 @@ public class ReviewLoader extends AsyncTaskLoader<List<Model>> {
             return null;
         }
 
-        return NetworkUtils.fetchReviewData(mUrl);
+        return NetworkUtils.fetchTrailerData(mUrl);
     }
 }
