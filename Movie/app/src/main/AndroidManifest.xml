@@ -19,12 +19,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.DetailActivity"
+        <activity
+            android:name=".ui.DetailActivity"
             android:label="@string/AndroidManifest_Detail"
-            android:parentActivityName=".ui.MainActivity"/>
+            android:parentActivityName=".ui.MainActivity" />
+
         <provider
-        android:authorities="de.am.popular"
-        android:name=".data.db.MovieProvider"/>
+            android:name=".data.db.MovieProvider"
+            android:authorities="de.am.popular" />
+
     </application>
 
 </manifest>
