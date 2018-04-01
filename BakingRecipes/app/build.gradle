@@ -22,15 +22,24 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-// Retrofit
+    // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.1.0'
 
-// JSON Parsing
+    // JSON Parsing
     implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
 
-// recyclerview
+    // recyclerview
     implementation 'com.android.support:recyclerview-v7:27.1.0'
+
+    //add room dependency
+    implementation "android.arch.persistence.room:runtime:$arch_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$arch_version"
+
+    // add dependency for the Lifecycle
+    implementation "android.arch.lifecycle:runtime:$arch_lib_version"
+    implementation "android.arch.lifecycle:extensions:$arch_version"
+    annotationProcessor "android.arch.lifecycle:compiler:$arch_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

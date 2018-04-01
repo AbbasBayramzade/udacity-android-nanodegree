@@ -1,7 +1,9 @@
-package com.ma.bakingrecipes;
+package com.ma.bakingrecipes.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.ma.bakingrecipes.R;
 
 public class MainActivity extends AppCompatActivity {
 
