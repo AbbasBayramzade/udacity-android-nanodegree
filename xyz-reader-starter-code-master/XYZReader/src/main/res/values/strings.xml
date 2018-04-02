@@ -9,5 +9,6 @@
 
     <string name="up">Up</string>
     <string name="more">See more</string>
+    <string name="message_finished_refresh">Refresh finished</string>
 
 </resources>

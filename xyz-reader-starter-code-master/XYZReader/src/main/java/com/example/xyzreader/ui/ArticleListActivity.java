@@ -43,7 +43,7 @@ import java.util.GregorianCalendar;
  * activity presents a grid of items as cards.
  */
 public class ArticleListActivity extends AppCompatActivity implements
-        SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = ArticleListActivity.class.toString();
     private Toolbar mToolbar;
@@ -105,8 +105,11 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
     };
 
+
     private void updateRefreshingUI() {
         mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
+        Snackbar.make(findViewById(R.id.coordinatorLayout), R.string.message_finished_refresh, Snackbar.LENGTH_LONG)
+                .show();
     }
 
     @Override
@@ -128,15 +131,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mRecyclerView.setAdapter(null);
-    }
-
-    @Override
-    public void onRefresh() {
-        startService(new Intent(this, UpdaterService.class));
-        Snackbar.make(findViewById(R.id.coordinatorLayout), "REFRESHING", Snackbar.LENGTH_LONG)
-                .setAction("OK", null)
-                .setActionTextColor(Color.GREEN)
-                .show();
     }
 
 

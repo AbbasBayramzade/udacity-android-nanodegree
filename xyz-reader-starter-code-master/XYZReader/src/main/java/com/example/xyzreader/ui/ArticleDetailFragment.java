@@ -239,12 +239,11 @@ public class ArticleDetailFragment extends Fragment implements
             bodyView.setText(Html.fromHtml(bodyText));
 
             TextView seeMore = (TextView) mRootView.findViewById(R.id.more_tv);
-            final String finalBodyText = bodyText;
             seeMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // Show all contents of the Article Text -
-                    bodyView.setText(Html.fromHtml(finalBodyText));
+                    bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
                 }
             });
             // --- Code end
