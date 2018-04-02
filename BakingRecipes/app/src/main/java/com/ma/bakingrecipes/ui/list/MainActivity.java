@@ -1,4 +1,4 @@
-package com.ma.bakingrecipes.ui;
+package com.ma.bakingrecipes.ui.list;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

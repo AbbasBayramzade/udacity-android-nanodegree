@@ -23,6 +23,7 @@ public class RecipeNetworkDataSource {
     private static RecipeNetworkDataSource sInstance;
     private final RecipeService mRecipeService;
 
+
     // LiveData storing the latest downloaded recipes
     private final MutableLiveData<Recipe[]> mDownloadedRecipes;
 
@@ -30,14 +31,15 @@ public class RecipeNetworkDataSource {
     private RecipeNetworkDataSource() {
         mRecipeService = InjectorUtils.provideRecipeService();
         mDownloadedRecipes = new MutableLiveData<>();
+
     }
 
     public synchronized static RecipeNetworkDataSource getInstance() {
-        Log.d(TAG, "Getting the repository");
+        Log.d(TAG, "Getting the RecipeNetworkDataSource");
         if (sInstance == null) {
             synchronized (LOCK) {
                 sInstance = new RecipeNetworkDataSource();
-                Log.d(TAG, "Made new repository");
+                Log.d(TAG, "Made new RecipeNetworkDataSource");
             }
         }
         return sInstance;
@@ -48,16 +50,16 @@ public class RecipeNetworkDataSource {
     }
 
     public void loadRecipes() {
-        mRecipeService.getRecipes().enqueue(new Callback<RecipeResponse>() {
+        mRecipeService.getRecipes().enqueue(new Callback<Recipe[]>() {
             @Override
-            public void onResponse(Call<RecipeResponse> call, Response<RecipeResponse> response) {
+            public void onResponse(Call<Recipe[]> call, Response<Recipe[]> response) {
 
                 if(response.isSuccessful()) {
-                    Recipe[] recipes = response.body().getRecipes();
-                    RecipeResponse recipeResponse = new RecipeResponse(recipes);
+                    Recipe[] recipes = response.body();
                     Log.d(TAG, "data loaded from API");
 
-                    mDownloadedRecipes.postValue(recipeResponse.getRecipes());
+                    mDownloadedRecipes.postValue(recipes);
+                    Log.d(TAG, "recipe post value called");
 
                 } else {
                     int statusCode  = response.code();
@@ -67,9 +69,9 @@ public class RecipeNetworkDataSource {
             }
 
             @Override
-            public void onFailure(Call<RecipeResponse> call, Throwable t) {
+            public void onFailure(Call<Recipe[]> call, Throwable t) {
                 // TODO show toast error
-                Log.d(TAG, "error loading from API");
+                Log.d(TAG, "error loading from API" + t.getMessage());
 
             }
         });
