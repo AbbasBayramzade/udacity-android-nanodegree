@@ -1,12 +1,13 @@
 package com.ma.bakingrecipes.ui.detail;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.ma.bakingrecipes.R;
 import com.ma.bakingrecipes.utilities.InjectorUtils;
+
 
 public class DetailActivity extends AppCompatActivity {
     private final String TAG = DetailActivity.class.getName();
@@ -27,7 +28,7 @@ public class DetailActivity extends AppCompatActivity {
         mViewModel.getRecipe().observe(this, value -> {
             if (value != null){
                 Log.d(TAG, value.getName());
-                Log.d(TAG,value.getImage());
+                Log.d(TAG,value.getIngredients().get(0).getIngredient());
                 //bindRecipeToUI(value);
             }
         });
