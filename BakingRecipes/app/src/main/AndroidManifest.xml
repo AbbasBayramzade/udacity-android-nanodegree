@@ -19,8 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.steps.StepDescriptionActivity"></activity>
-        <activity android:name=".ui.ingredients.IngredientsActivity"></activity>
+        <activity android:name=".ui.detail.steps.StepDescriptionActivity"
+            android:parentActivityName=".ui.detail.DetailActivity"/>
+        <activity android:name=".ui.detail.ingredients.IngredientsActivity"
+            android:parentActivityName=".ui.detail.DetailActivity"/>
     </application>
 
 </manifest>

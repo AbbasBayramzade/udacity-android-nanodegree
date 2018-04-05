@@ -1,4 +1,4 @@
-package com.ma.bakingrecipes.ui.steps;
+package com.ma.bakingrecipes.ui.detail.steps;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;

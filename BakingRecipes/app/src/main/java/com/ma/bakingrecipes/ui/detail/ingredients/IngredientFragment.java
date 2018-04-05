@@ -1,4 +1,4 @@
-package com.ma.bakingrecipes.ui.steps;
+package com.ma.bakingrecipes.ui.detail.ingredients;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,15 +10,14 @@ import android.widget.TextView;
 import com.ma.bakingrecipes.R;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
-public class StepDescriptionFragment extends Fragment {
+public class IngredientFragment extends Fragment {
 
-    @BindView(R.id.step_instruction)
-    TextView stepInstructions;
+    @BindView(R.id.ingredient_instruction)
+    TextView ingredient;
 
-    public StepDescriptionFragment() {
+    public IngredientFragment() {
         // Required empty public constructor
     }
 
@@ -26,11 +25,7 @@ public class StepDescriptionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_step_description,
-                container, false);
-
-        ButterKnife.bind(this, rootView);
-
-        return rootView;
+        return inflater.inflate(R.layout.fragment_ingredient, container, false);
     }
+
 }
