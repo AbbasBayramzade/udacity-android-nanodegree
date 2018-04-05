@@ -1,36 +1,41 @@
 package com.ma.bakingrecipes.ui.detail;
 
-import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.ma.bakingrecipes.R;
-import com.ma.bakingrecipes.utilities.InjectorUtils;
+import com.ma.bakingrecipes.ui.ingredients.IngredientsActivity;
+import com.ma.bakingrecipes.ui.steps.StepDescriptionActivity;
 
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements ItemFragment.OnItemClickListener {
+
     private final String TAG = DetailActivity.class.getName();
 
-    private DetailActivityViewModel mViewModel;
+    private final String KEY_POSITION = "CLICKED_POSITION";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        // for testing purposes just pass the name
-        DetailViewModelFactory factory =
-                InjectorUtils.provideDetailViewModelFactory(this, "Nutella Pie");
+    }
 
-        mViewModel = ViewModelProviders.of(this, factory)
-                .get(DetailActivityViewModel.class);
-        mViewModel.getRecipe().observe(this, value -> {
-            if (value != null){
-                Log.d(TAG, value.getName());
-                Log.d(TAG,value.getIngredients().get(0).getIngredient());
-                //bindRecipeToUI(value);
-            }
-        });
+    @Override
+    public void onItemSelected(int position) {
+        Intent intent;
+        if(position == 0){
+           intent = new Intent(DetailActivity.this, IngredientsActivity.class);
+            Log.d(TAG, "OPEN ING");
+
+        } else{
+            intent = new Intent(DetailActivity.this, StepDescriptionActivity.class);
+            Log.d(TAG, "OPEN STEPS");
+        }
+        intent.putExtra(KEY_POSITION, position);
+        startActivity(intent);
     }
 }
