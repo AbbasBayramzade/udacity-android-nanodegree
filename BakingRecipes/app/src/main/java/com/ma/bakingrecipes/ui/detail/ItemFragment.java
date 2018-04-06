@@ -20,6 +20,8 @@ import butterknife.ButterKnife;
 
 public class ItemFragment extends Fragment {
 
+    private final String KEY_RECIPE_NAME = "recipe_name";
+
     private final String TAG = ItemFragment.class.getName();
 
     // OnItemClickListener interface, calls a method in the host activity named onItemSelected
@@ -53,10 +55,20 @@ public class ItemFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        recyclerView.setAdapter(new MyItemRecyclerViewAdapter(0));
+
+        String recipeName = "Nutella Pie";
+        if(getActivity().getIntent() != null && getActivity().getIntent().getExtras() != null &&
+                getActivity().getIntent().getExtras().containsKey(KEY_RECIPE_NAME)){
+
+            Log.d(TAG, "passed recipe name: " + getActivity().getIntent().getExtras().getString(KEY_RECIPE_NAME));
+            recipeName = getActivity().getIntent().getExtras().getString(KEY_RECIPE_NAME);
+
+        }
 
         // for testing purposes just passing the name
         DetailViewModelFactory factory =
-                InjectorUtils.provideDetailViewModelFactory(getContext(), "Nutella Pie");
+                InjectorUtils.provideDetailViewModelFactory(getContext(), recipeName);
 
         mViewModel = ViewModelProviders.of(this, factory)
                 .get(DetailActivityViewModel.class);

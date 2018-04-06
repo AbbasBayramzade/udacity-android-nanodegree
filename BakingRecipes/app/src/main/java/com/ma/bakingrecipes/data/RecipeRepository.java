@@ -5,8 +5,11 @@ import android.util.Log;
 
 import com.ma.bakingrecipes.AppExecutor;
 import com.ma.bakingrecipes.data.database.RecipeDao;
+import com.ma.bakingrecipes.data.database.RecyclerViewRecipeEntry;
 import com.ma.bakingrecipes.data.network.RecipeNetworkDataSource;
 import com.ma.bakingrecipes.model.Recipe;
+
+import java.util.List;
 
 
 /**
@@ -51,6 +54,12 @@ public class RecipeRepository {
         }
         return sInstance;
     }
+
+    public LiveData<List<RecyclerViewRecipeEntry>> getRecipes(){
+        fetchRecipes();
+        return recipeDao.getAllRecipes();
+    }
+
 
     public LiveData<Recipe> getRecipeByName(String name){
         fetchRecipes();

@@ -8,6 +8,8 @@ import android.arch.persistence.room.Query;
 
 import com.ma.bakingrecipes.model.Recipe;
 
+import java.util.List;
+
 /**
  * Created by amatanat.
  */
@@ -18,6 +20,9 @@ public interface RecipeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Recipe... recipeEntries);
 
-    @Query("SELECT * from recipe WHERE name = :name")
+    @Query("SELECT * FROM recipe WHERE name = :name")
     LiveData<Recipe> getRecipeByName(String name);
+
+    @Query("SELECT id, name, image FROM recipe")
+    LiveData<List<RecyclerViewRecipeEntry>> getAllRecipes();
 }
