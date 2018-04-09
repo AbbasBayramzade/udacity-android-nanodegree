@@ -32,6 +32,8 @@ public class ItemFragment extends Fragment {
     // Define a new interface OnItemClickListener that triggers a callback in the host activity
     OnItemClickListener mCallback;
 
+    private String recipeName;
+
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -57,7 +59,6 @@ public class ItemFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(new MyItemRecyclerViewAdapter(0));
 
-        String recipeName = "Nutella Pie";
         if(getActivity().getIntent() != null && getActivity().getIntent().getExtras() != null &&
                 getActivity().getIntent().getExtras().containsKey(KEY_RECIPE_NAME)){
 
@@ -66,7 +67,8 @@ public class ItemFragment extends Fragment {
 
         }
 
-        // for testing purposes just passing the name
+        Log.v(TAG, "recipe name: " + recipeName);
+
         DetailViewModelFactory factory =
                 InjectorUtils.provideDetailViewModelFactory(getContext(), recipeName);
 
@@ -121,5 +123,4 @@ public class ItemFragment extends Fragment {
         super.onDetach();
         mCallback = null;
     }
-
 }

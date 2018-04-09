@@ -9,6 +9,7 @@ import com.ma.bakingrecipes.data.network.RecipeNetworkDataSource;
 import com.ma.bakingrecipes.data.network.RecipeService;
 import com.ma.bakingrecipes.data.network.RetrofitClient;
 import com.ma.bakingrecipes.ui.detail.DetailViewModelFactory;
+import com.ma.bakingrecipes.ui.detail.ingredients.IngredientViewModelFactory;
 import com.ma.bakingrecipes.ui.list.MainViewModelFactory;
 
 /**
@@ -39,6 +40,12 @@ public class InjectorUtils {
     public static DetailViewModelFactory provideDetailViewModelFactory(Context context, String name) {
         RecipeRepository repository = provideRepository(context.getApplicationContext());
         return new DetailViewModelFactory(repository, name);
+    }
+
+
+    public static IngredientViewModelFactory provideIngredientViewModelFactory(Context context, String name) {
+        RecipeRepository repository = provideRepository(context.getApplicationContext());
+        return new IngredientViewModelFactory(repository, name);
     }
 
     public static MainViewModelFactory provideMainActivityViewModelFactory(Context context) {

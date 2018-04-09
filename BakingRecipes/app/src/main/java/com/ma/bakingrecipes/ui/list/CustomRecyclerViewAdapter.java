@@ -30,7 +30,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     private List<RecyclerViewRecipeEntry> recipeEntries;
     private Context context;
 
-    public CustomRecyclerViewAdapter(Context context,ListItemClickListener listener){
+    public CustomRecyclerViewAdapter(Context context, ListItemClickListener listener){
         this.context = context;
         onClickListener = listener;
         recipeEntries = new ArrayList<>();
