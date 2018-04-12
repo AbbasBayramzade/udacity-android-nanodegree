@@ -7,14 +7,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ma.bakingrecipes.R;
+import com.ma.bakingrecipes.model.Ingredient;
+
+import java.util.List;
 
 
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
-    private final Integer mValues;
+    private Integer mValues;
 
-    public MyItemRecyclerViewAdapter(Integer values) {
-        mValues = values;
+    public MyItemRecyclerViewAdapter() {
+        mValues = 0;
     }
 
     @Override
@@ -35,18 +38,21 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         holder.mItem.setText(text);
     }
 
+    public void swapValue(Integer value){
+        mValues = value;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return mValues;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final View mView;
-        private final TextView mItem;
+        private TextView mItem;
 
         public ViewHolder(View view) {
             super(view);
-            mView = view;
             mItem = view.findViewById(R.id.cv_textview);
 
         }

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ma.bakingrecipes.R;
-import com.ma.bakingrecipes.data.database.RecyclerViewRecipeEntry;
 import com.ma.bakingrecipes.model.Ingredient;
 
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ import java.util.List;
 public class IngredientItemRecyclerViewAdapter extends RecyclerView.Adapter<IngredientItemRecyclerViewAdapter.ViewHolder> {
 
     private final String TAG = IngredientItemRecyclerViewAdapter.class.getSimpleName();
+    private static final String SPACE= " ";
     private List<Ingredient> ingredients;
 
     public IngredientItemRecyclerViewAdapter() {
@@ -39,10 +39,12 @@ public class IngredientItemRecyclerViewAdapter extends RecyclerView.Adapter<Ingr
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Ingredient ingredient = ingredients.get(position);
+
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(ingredient.getQuantity());
-        stringBuilder.append(ingredient.getMeasure());
-        stringBuilder.append(ingredient.getIngredient());
+        stringBuilder.append(ingredient.getQuantity()).append(SPACE);
+        stringBuilder.append(ingredient.getMeasure()).append(SPACE);
+        stringBuilder.append(ingredient.getIngredient()).append(SPACE);
+
         Log.d(TAG, "ingredient detail : " + stringBuilder.toString());
         holder.ingredientDetail.setText(stringBuilder.toString());
     }

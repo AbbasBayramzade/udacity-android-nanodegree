@@ -8,8 +8,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 /**
- * Created by amatanat.
- * // source https://codelabs.developers.google.com/codelabs/build-app-with-arch-components/index.html?index=..%2F..%2Findex#0
+ * source https://codelabs.developers.google.com/codelabs/build-app-with-arch-components/index.html?index=..%2F..%2Findex#0
  */
 
 public class AppExecutor {
@@ -39,14 +38,6 @@ public class AppExecutor {
 
     public Executor diskIO() {
         return diskIO;
-    }
-
-    public Executor mainThread() {
-        return mainThread;
-    }
-
-    public Executor networkIO() {
-        return networkIO;
     }
 
     private static class MainThreadExecutor implements Executor {

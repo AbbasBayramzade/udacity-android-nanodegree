@@ -33,13 +33,12 @@ public class ItemFragment extends Fragment {
     OnItemClickListener mCallback;
 
     private String recipeName;
+    private MyItemRecyclerViewAdapter adapter;
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
-    // private List<Integer> instructionAndSteps = new ArrayList<>();
-
-    private DetailActivityViewModel mViewModel;
+    private SharedViewModel mViewModel;
 
 
     /**
@@ -49,6 +48,7 @@ public class ItemFragment extends Fragment {
     public ItemFragment() {
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,31 +56,29 @@ public class ItemFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        recyclerView.setAdapter(new MyItemRecyclerViewAdapter(0));
-
-        if(getActivity().getIntent() != null && getActivity().getIntent().getExtras() != null &&
-                getActivity().getIntent().getExtras().containsKey(KEY_RECIPE_NAME)){
-
-            Log.d(TAG, "passed recipe name: " + getActivity().getIntent().getExtras().getString(KEY_RECIPE_NAME));
-            recipeName = getActivity().getIntent().getExtras().getString(KEY_RECIPE_NAME);
-
+        // get recipe name
+        if(savedInstanceState != null)
+            recipeName = savedInstanceState.getString(KEY_RECIPE_NAME);
+        else{
+            if(getArguments() != null && getArguments().containsKey(KEY_RECIPE_NAME))
+                recipeName = getArguments().getString(KEY_RECIPE_NAME);
         }
 
         Log.v(TAG, "recipe name: " + recipeName);
 
-        DetailViewModelFactory factory =
+        adapter = new MyItemRecyclerViewAdapter();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
+
+        SharedViewModelFactory factory =
                 InjectorUtils.provideDetailViewModelFactory(getContext(), recipeName);
 
-        mViewModel = ViewModelProviders.of(this, factory)
-                .get(DetailActivityViewModel.class);
+        mViewModel = ViewModelProviders.of(getActivity(), factory)
+                .get(SharedViewModel.class);
 
         mViewModel.getRecipe().observe(this, value -> {
-            if (value != null){
-                Log.d(TAG, value.getName());
-                Log.d(TAG,value.getIngredients().get(0).getIngredient());
+            if (value != null)
                 bindData(value);
-            }
         });
 
         return view;
@@ -88,12 +86,11 @@ public class ItemFragment extends Fragment {
 
     private void bindData(Recipe value) {
         int count = value.getSteps().size() + 1;
-        recyclerView.setAdapter(new MyItemRecyclerViewAdapter(count));
+        adapter.swapValue(count);
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         mCallback.onItemSelected(position);
-                        Log.d(TAG, "FRAGMENT OPEN ING onItemClick");
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
@@ -102,6 +99,14 @@ public class ItemFragment extends Fragment {
         );
     }
 
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // Save the fragment's state here
+        outState.putString(KEY_RECIPE_NAME, recipeName);
+        super.onSaveInstanceState(outState);
+
+    }
 
     // Override onAttach to make sure that the container activity has implemented the callback
     @Override

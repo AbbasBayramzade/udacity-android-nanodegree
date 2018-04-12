@@ -2,7 +2,6 @@ package com.ma.bakingrecipes.ui.detail;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -12,13 +11,13 @@ import com.ma.bakingrecipes.ui.detail.ingredients.IngredientsActivity;
 import com.ma.bakingrecipes.ui.detail.steps.StepDescriptionActivity;
 import com.ma.bakingrecipes.ui.detail.steps.StepDescriptionFragment;
 
-
 public class DetailActivity extends AppCompatActivity implements ItemFragment.OnItemClickListener {
 
     private final String TAG = DetailActivity.class.getName();
 
     private final String KEY_POSITION = "CLICKED_POSITION";
     private final String KEY_RECIPE_NAME = "recipe_name";
+
     private boolean isTablet;
     private String recipeName;
 
@@ -27,27 +26,47 @@ public class DetailActivity extends AppCompatActivity implements ItemFragment.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        isTablet = getResources().getBoolean(R.bool.isTablet);
-
-        if (getIntent() != null && getIntent().getExtras() != null &&
+        if(savedInstanceState != null ){
+            recipeName = savedInstanceState.getString(KEY_RECIPE_NAME);
+        } else{
+            if (getIntent() != null && getIntent().getExtras() != null &&
                     getIntent().getExtras().containsKey(KEY_RECIPE_NAME)) {
 
-            Log.d(TAG, "passed recipe name: " + getIntent().getExtras().getString(KEY_RECIPE_NAME));
-            recipeName = getIntent().getExtras().getString(KEY_RECIPE_NAME);
+                Log.d(TAG, "passed recipe name: " + getIntent().getExtras().getString(KEY_RECIPE_NAME));
+                recipeName = getIntent().getExtras().getString(KEY_RECIPE_NAME);
+            }
         }
 
+        Log.d(TAG, "RECIPE NAME " + recipeName);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_RECIPE_NAME, recipeName);
+
+        ItemFragment fragment = new ItemFragment();
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.item_container, fragment)
+                .commit();
+
+        // check if device is a tablet
+        isTablet = getResources().getBoolean(R.bool.isTablet);
     }
 
     @Override
     public void onItemSelected(int position) {
         if (isTablet) {
+            Bundle bundle = new Bundle();
+            bundle.putString("recipe_name", recipeName);
+
             if (position == 0) {
                 IngredientFragment fragment = new IngredientFragment();
+                fragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fragment)
                         .commit();
             } else {
                 StepDescriptionFragment fragment = new StepDescriptionFragment();
+                fragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fragment)
                         .commit();
@@ -67,5 +86,11 @@ public class DetailActivity extends AppCompatActivity implements ItemFragment.On
             startActivity(intent);
         }
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(KEY_RECIPE_NAME, recipeName);
+        super.onSaveInstanceState(outState);
     }
 }

@@ -4,7 +4,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by amatanat.
  * source https://code.tutsplus.com/tutorials/getting-started-with-retrofit-2--cms-27792
  */
 

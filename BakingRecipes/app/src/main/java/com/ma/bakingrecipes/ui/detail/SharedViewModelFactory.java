@@ -9,12 +9,12 @@ import com.ma.bakingrecipes.data.RecipeRepository;
  * Created by amatanat.
  */
 
-public class DetailViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+public class SharedViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private final RecipeRepository repository;
     private String name;
 
-    public DetailViewModelFactory(RecipeRepository repository, String name) {
+    public SharedViewModelFactory(RecipeRepository repository, String name) {
         this.repository = repository;
         this.name = name;
     }
@@ -22,6 +22,6 @@ public class DetailViewModelFactory extends ViewModelProvider.NewInstanceFactory
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         //noinspection unchecked
-        return (T) new DetailActivityViewModel(repository, name);
+        return (T) new SharedViewModel(repository, name);
     }
 }
