@@ -17,6 +17,7 @@ public class DetailActivity extends AppCompatActivity implements ItemFragment.On
 
     private final String KEY_POSITION = "CLICKED_POSITION";
     private final String KEY_RECIPE_NAME = "recipe_name";
+    private final String KEY_DESCRIPTION_NUMBER = "description_number";
 
     private boolean isTablet;
     private String recipeName;
@@ -57,6 +58,7 @@ public class DetailActivity extends AppCompatActivity implements ItemFragment.On
         if (isTablet) {
             Bundle bundle = new Bundle();
             bundle.putString("recipe_name", recipeName);
+            bundle.putInt(KEY_DESCRIPTION_NUMBER, position);
 
             if (position == 0) {
                 IngredientFragment fragment = new IngredientFragment();
