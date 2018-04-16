@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -32,11 +33,13 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.ma.bakingrecipes.R;
+import com.ma.bakingrecipes.model.Recipe;
 import com.ma.bakingrecipes.model.Step;
 import com.ma.bakingrecipes.ui.detail.SharedViewModel;
 import com.ma.bakingrecipes.ui.detail.SharedViewModelFactory;
 import com.ma.bakingrecipes.ui.detail.ingredients.IngredientFragment;
 import com.ma.bakingrecipes.utilities.InjectorUtils;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,27 +50,23 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
     private final String TAG = StepDescriptionFragment.class.getName();
     private final String KEY_RECIPE_NAME = "recipe_name";
     private final String KEY_DESCRIPTION_NUMBER = "description_number";
-
-    private SharedViewModel mViewModel;
+    @BindView(R.id.exo_player_view)
+    SimpleExoPlayerView playerView;
+    @BindView(R.id.next_button)
+    Button nextButton;
+    @BindView(R.id.previous_button)
+    Button previousButton;
+    @BindView(R.id.step_description_textview)
+    TextView stepDescriptionText;
+    @BindView(R.id.step_image)
+    ImageView stepImage;
+    private SharedViewModel sharedViewModel;
     private String recipeName;
     private int descriptionNumber;
     private SimpleExoPlayer exoPlayer;
     private int numberOfAvailableSteps;
     private MediaSessionCompat mediaSessionCompat;
     private PlaybackStateCompat.Builder stateBuilder;
-
-    @BindView(R.id.exo_player_view)
-    SimpleExoPlayerView playerView;
-
-    @BindView(R.id.next_button)
-    Button nextButton;
-
-    @BindView(R.id.previous_button)
-    Button previousButton;
-
-    @BindView(R.id.step_description_textview)
-    TextView stepDescriptionText;
-
 
     public StepDescriptionFragment() {
         // Required empty public constructor
@@ -96,23 +95,20 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
 
         SharedViewModelFactory factory =
                 InjectorUtils.provideDetailViewModelFactory(getContext(), recipeName);
-        mViewModel = ViewModelProviders.of(getActivity(), factory)
+        sharedViewModel = ViewModelProviders.of(getActivity(), factory)
                 .get(SharedViewModel.class);
 
-        mViewModel.getRecipe().observe(this, value -> {
+        sharedViewModel.getRecipe().observe(this, value -> {
             if (value != null) {
                 numberOfAvailableSteps = value.getSteps().size();
 
-                checkButtonVisibility();
+                checkNextButtonVisibility();
 
                 Step step = value.getSteps().get(descriptionNumber);
-                if (!step.getVideoURL().isEmpty())
-                    initializePlayer(Uri.parse(step.getVideoURL()));
-                else if (!step.getThumbnailURL().isEmpty()) {
-                    initializePlayer(Uri.parse(step.getThumbnailURL()));
-                } else {
-                    playerView.setVisibility(View.GONE);
-                }
+                // set description text
+                stepDescriptionText.setText(step.getDescription());
+
+                displayVideoOrImage(value);
             }
         });
 
@@ -123,11 +119,38 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
         return rootView;
     }
 
+    private void displayVideoOrImage(Recipe recipe) {
+
+        Step step = recipe.getSteps().get(descriptionNumber);
+
+        if (!step.getVideoURL().isEmpty()){
+            // change visibility of an imageview
+            initializePlayer(Uri.parse(step.getVideoURL()));
+
+        } else if (!step.getThumbnailURL().isEmpty()) {
+            initializePlayer(Uri.parse(step.getThumbnailURL()));
+        } else {
+            // change visibility of a playerview and an imageview
+            // display recipe image
+            playerView.setVisibility(View.GONE);
+            stepImage.setVisibility(View.VISIBLE);
+
+            if(recipe.getImage().isEmpty())
+                stepImage.setImageResource(R.drawable.ic_recipe_placeholer_image);
+            else
+                Picasso.with(getContext())
+                        .load(recipe.getImage())
+                        .placeholder(R.drawable.ic_recipe_placeholer_image)
+                        .error(R.drawable.ic_recipe_placeholer_image)
+                        .into(stepImage);
+        }
+    }
+
     private void previousButtonClick() {
         if(descriptionNumber == 0) {
             // start ingredients fragment
             Bundle bundle = new Bundle();
-            bundle.putString("recipe_name", recipeName);
+            bundle.putString(KEY_RECIPE_NAME, recipeName);
             IngredientFragment fragment = new IngredientFragment();
             fragment.setArguments(bundle);
 
@@ -138,7 +161,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
         } else {
 
             Bundle bundle = new Bundle();
-            bundle.putString("recipe_name", recipeName);
+            bundle.putString(KEY_RECIPE_NAME, recipeName);
             bundle.putInt(KEY_DESCRIPTION_NUMBER, descriptionNumber - 1);
             StepDescriptionFragment fragment = new StepDescriptionFragment();
             fragment.setArguments(bundle);
@@ -185,7 +208,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
         mediaSessionCompat.setActive(true);
     }
 
-    private void checkButtonVisibility() {
+    private void checkNextButtonVisibility() {
         if(descriptionNumber + 1 == numberOfAvailableSteps)
             nextButton.setVisibility(View.GONE);
         else
@@ -195,7 +218,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
 
     private void nextButtonClick() {
         Bundle bundle = new Bundle();
-        bundle.putString("recipe_name", recipeName);
+        bundle.putString(KEY_RECIPE_NAME, recipeName);
         bundle.putInt(KEY_DESCRIPTION_NUMBER, descriptionNumber + 1);
         StepDescriptionFragment fragment = new StepDescriptionFragment();
         fragment.setArguments(bundle);
@@ -253,9 +276,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
             exoPlayer.release();
             exoPlayer = null;
         }
-
     }
-
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
