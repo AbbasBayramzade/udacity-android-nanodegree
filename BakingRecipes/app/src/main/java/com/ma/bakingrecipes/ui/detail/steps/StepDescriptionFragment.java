@@ -12,13 +12,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -33,7 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class StepDescriptionFragment extends Fragment {
+public class StepDescriptionFragment extends Fragment implements ExoPlayer.EventListener {
 
     private final String TAG = StepDescriptionFragment.class.getName();
     private final String KEY_RECIPE_NAME = "recipe_name";
@@ -131,6 +136,8 @@ public class StepDescriptionFragment extends Fragment {
             exoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector, loadControl);
             playerView.setPlayer(exoPlayer);
 
+            exoPlayer.addListener(this);
+
             // Prepare the MediaSource.
             String userAgent = Util.getUserAgent(getActivity(), getString(R.string.app_name));
             MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(
@@ -168,5 +175,34 @@ public class StepDescriptionFragment extends Fragment {
             exoPlayer = null;
         }
 
+    }
+
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        if (playWhenReady && playbackState == ExoPlayer.STATE_READY)
+            Log.d(TAG, "onPlayerStateChanged: playing");
+        else if(playbackState == ExoPlayer.STATE_READY)
+            Log.d(TAG, "onPlayerStateChanged: paused");
+    }
+
+    @Override
+    public void onTimelineChanged(Timeline timeline, Object manifest) {
+    }
+
+    @Override
+    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+    }
+
+    @Override
+    public void onLoadingChanged(boolean isLoading) {
+    }
+
+    @Override
+    public void onPlayerError(ExoPlaybackException error) {
+    }
+
+    @Override
+    public void onPositionDiscontinuity() {
     }
 }
