@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +51,8 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
     private int descriptionNumber;
     private SimpleExoPlayer exoPlayer;
     private int numberOfAvailableSteps;
+    private MediaSessionCompat mediaSessionCompat;
+    private PlaybackStateCompat.Builder stateBuilder;
 
     @BindView(R.id.exo_player_view)
     SimpleExoPlayerView playerView;
@@ -78,6 +82,9 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
         Log.v(TAG, "recipe name: " + recipeName);
         Log.v(TAG, "step description num: " + descriptionNumber);
 
+        // Initialize the Media Session.
+        initializeMediaSession();
+
         SharedViewModelFactory factory =
                 InjectorUtils.provideDetailViewModelFactory(getContext(), recipeName);
         mViewModel = ViewModelProviders.of(getActivity(), factory)
@@ -105,6 +112,41 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
         });
 
         return rootView;
+    }
+
+    /**
+     * Initializes the Media Session to be enabled with media buttons, transport controls, callbacks
+     * and media controller.
+     * Source: https://github.com/udacity/AdvancedAndroid_ClassicalMusicQuiz
+     */
+    private void initializeMediaSession() {
+        // Create a MediaSessionCompat.
+        mediaSessionCompat = new MediaSessionCompat(getActivity(), TAG);
+
+        // Enable callbacks from MediaButtons and TransportControls.
+        mediaSessionCompat.setFlags(
+                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
+                        MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+
+        // Do not let MediaButtons restart the player when the app is not visible.
+        mediaSessionCompat.setMediaButtonReceiver(null);
+
+        // Set an initial PlaybackState with ACTION_PLAY, so media buttons can start the player.
+        stateBuilder = new PlaybackStateCompat.Builder()
+                .setActions(
+                        PlaybackStateCompat.ACTION_PLAY |
+                                PlaybackStateCompat.ACTION_PAUSE |
+                                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
+                                PlaybackStateCompat.ACTION_PLAY_PAUSE);
+
+        mediaSessionCompat.setPlaybackState(stateBuilder.build());
+
+
+        // MySessionCallback has methods that handle callbacks from a media controller.
+        mediaSessionCompat.setCallback(new MySessionCallback());
+
+        // Start the Media Session since the activity is active.
+        mediaSessionCompat.setActive(true);
     }
 
     private void checkButtonVisibility() {
@@ -166,6 +208,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
         super.onDestroy();
         //release exoplayer
         releasePlayer();
+        mediaSessionCompat.setActive(false);
     }
 
     private void releasePlayer() {
@@ -180,10 +223,15 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if (playWhenReady && playbackState == ExoPlayer.STATE_READY)
-            Log.d(TAG, "onPlayerStateChanged: playing");
-        else if(playbackState == ExoPlayer.STATE_READY)
-            Log.d(TAG, "onPlayerStateChanged: paused");
+        if((playbackState == ExoPlayer.STATE_READY) && playWhenReady){
+            stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
+                    exoPlayer.getCurrentPosition(), 1f);
+        } else if((playbackState == ExoPlayer.STATE_READY)){
+            stateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
+                    exoPlayer.getCurrentPosition(), 1f);
+        }
+        mediaSessionCompat.setPlaybackState(stateBuilder.build());
+
     }
 
     @Override
@@ -204,5 +252,23 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
 
     @Override
     public void onPositionDiscontinuity() {
+    }
+
+    // source https://github.com/udacity/AdvancedAndroid_ClassicalMusicQuiz
+    private class MySessionCallback extends MediaSessionCompat.Callback {
+        @Override
+        public void onPlay() {
+            exoPlayer.setPlayWhenReady(true);
+        }
+
+        @Override
+        public void onPause() {
+            exoPlayer.setPlayWhenReady(false);
+        }
+
+        @Override
+        public void onSkipToPrevious() {
+            exoPlayer.seekTo(0);
+        }
     }
 }
