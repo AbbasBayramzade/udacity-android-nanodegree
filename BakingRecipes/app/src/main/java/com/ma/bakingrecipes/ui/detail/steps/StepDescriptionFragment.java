@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -34,6 +35,7 @@ import com.ma.bakingrecipes.R;
 import com.ma.bakingrecipes.model.Step;
 import com.ma.bakingrecipes.ui.detail.SharedViewModel;
 import com.ma.bakingrecipes.ui.detail.SharedViewModelFactory;
+import com.ma.bakingrecipes.ui.detail.ingredients.IngredientFragment;
 import com.ma.bakingrecipes.utilities.InjectorUtils;
 
 import butterknife.BindView;
@@ -59,6 +61,13 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
 
     @BindView(R.id.next_button)
     Button nextButton;
+
+    @BindView(R.id.previous_button)
+    Button previousButton;
+
+    @BindView(R.id.step_description_textview)
+    TextView stepDescriptionText;
+
 
     public StepDescriptionFragment() {
         // Required empty public constructor
@@ -107,11 +116,38 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
             }
         });
 
-        nextButton.setOnClickListener(view -> {
-            nextButtonClick();
-        });
+        nextButton.setOnClickListener(view -> nextButtonClick());
+
+        previousButton.setOnClickListener(view -> previousButtonClick());
 
         return rootView;
+    }
+
+    private void previousButtonClick() {
+        if(descriptionNumber == 0) {
+            // start ingredients fragment
+            Bundle bundle = new Bundle();
+            bundle.putString("recipe_name", recipeName);
+            IngredientFragment fragment = new IngredientFragment();
+            fragment.setArguments(bundle);
+
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.step_description_container, fragment);
+            transaction.commit();
+
+        } else {
+
+            Bundle bundle = new Bundle();
+            bundle.putString("recipe_name", recipeName);
+            bundle.putInt(KEY_DESCRIPTION_NUMBER, descriptionNumber - 1);
+            StepDescriptionFragment fragment = new StepDescriptionFragment();
+            fragment.setArguments(bundle);
+
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.step_description_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
 
     /**

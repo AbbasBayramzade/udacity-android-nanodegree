@@ -21,23 +21,26 @@ public class StepDescriptionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_description);
 
-        if (getIntent() != null && getIntent().getExtras() != null &&
-                getIntent().getExtras().containsKey(KEY_RECIPE_NAME)) {
+        if (savedInstanceState == null){
+            if (getIntent() != null && getIntent().getExtras() != null &&
+                    getIntent().getExtras().containsKey(KEY_RECIPE_NAME)) {
 
-            Log.d(TAG, "passed recipe name: " + getIntent().getExtras().getString(KEY_RECIPE_NAME));
-            recipeName = getIntent().getExtras().getString(KEY_RECIPE_NAME);
-            descriptionNumber = getIntent().getExtras().getInt(KEY_DESCRIPTION_NUMBER) - 1;
-            Log.d(TAG, "description number: " + descriptionNumber);
+                Log.d(TAG, "passed recipe name: " + getIntent().getExtras().getString(KEY_RECIPE_NAME));
+                recipeName = getIntent().getExtras().getString(KEY_RECIPE_NAME);
+                descriptionNumber = getIntent().getExtras().getInt(KEY_DESCRIPTION_NUMBER) - 1;
+                Log.d(TAG, "description number: " + descriptionNumber);
+            }
+
+            Bundle bundle = new Bundle();
+            bundle.putString("recipe_name", recipeName);
+            bundle.putInt(KEY_DESCRIPTION_NUMBER, descriptionNumber);
+            StepDescriptionFragment fragment = new StepDescriptionFragment();
+            fragment.setArguments(bundle);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .add(R.id.step_description_container, fragment)
+                    .commit();
         }
 
-        Bundle bundle = new Bundle();
-        bundle.putString("recipe_name", recipeName);
-        bundle.putInt(KEY_DESCRIPTION_NUMBER, descriptionNumber);
-        StepDescriptionFragment fragment = new StepDescriptionFragment();
-        fragment.setArguments(bundle);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.step_description_container, fragment)
-                .commit();
     }
 }
