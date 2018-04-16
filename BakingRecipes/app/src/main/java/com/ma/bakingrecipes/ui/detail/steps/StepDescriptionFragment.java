@@ -4,12 +4,12 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -24,15 +24,10 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.ma.bakingrecipes.R;
-import com.ma.bakingrecipes.model.Recipe;
 import com.ma.bakingrecipes.model.Step;
 import com.ma.bakingrecipes.ui.detail.SharedViewModel;
 import com.ma.bakingrecipes.ui.detail.SharedViewModelFactory;
-import com.ma.bakingrecipes.ui.detail.ingredients.IngredientFragment;
-import com.ma.bakingrecipes.ui.detail.ingredients.IngredientItemRecyclerViewAdapter;
 import com.ma.bakingrecipes.utilities.InjectorUtils;
-
-import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,9 +43,13 @@ public class StepDescriptionFragment extends Fragment {
     private String recipeName;
     private int descriptionNumber;
     private SimpleExoPlayer exoPlayer;
+    private int numberOfAvailableSteps;
 
     @BindView(R.id.exo_player_view)
     SimpleExoPlayerView playerView;
+
+    @BindView(R.id.next_button)
+    Button nextButton;
 
     public StepDescriptionFragment() {
         // Required empty public constructor
@@ -65,18 +64,14 @@ public class StepDescriptionFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
 
-        if(savedInstanceState != null){
-            recipeName = savedInstanceState.getString(KEY_RECIPE_NAME);
-            descriptionNumber = savedInstanceState.getInt(KEY_DESCRIPTION_NUMBER);
-        }else{
-            if(getArguments() != null && getArguments().containsKey(KEY_RECIPE_NAME)
-                    && getArguments().containsKey(KEY_DESCRIPTION_NUMBER)){
-                recipeName = getArguments().getString(KEY_RECIPE_NAME);
-                descriptionNumber = getArguments().getInt(KEY_DESCRIPTION_NUMBER);
-            }
+        if (getArguments() != null && getArguments().containsKey(KEY_RECIPE_NAME)
+                && getArguments().containsKey(KEY_DESCRIPTION_NUMBER)) {
+            recipeName = getArguments().getString(KEY_RECIPE_NAME);
+            descriptionNumber = getArguments().getInt(KEY_DESCRIPTION_NUMBER);
         }
 
         Log.v(TAG, "recipe name: " + recipeName);
+        Log.v(TAG, "step description num: " + descriptionNumber);
 
         SharedViewModelFactory factory =
                 InjectorUtils.provideDetailViewModelFactory(getContext(), recipeName);
@@ -84,25 +79,52 @@ public class StepDescriptionFragment extends Fragment {
                 .get(SharedViewModel.class);
 
         mViewModel.getRecipe().observe(this, value -> {
-            if (value != null){
+            if (value != null) {
+                numberOfAvailableSteps = value.getSteps().size();
+
+                checkButtonVisibility();
+
                 Step step = value.getSteps().get(descriptionNumber);
-                if(!step.getVideoURL().isEmpty())
+                if (!step.getVideoURL().isEmpty())
                     initializePlayer(Uri.parse(step.getVideoURL()));
-                else if(!step.getThumbnailURL().isEmpty()){
+                else if (!step.getThumbnailURL().isEmpty()) {
                     initializePlayer(Uri.parse(step.getThumbnailURL()));
-                }else{
+                } else {
                     playerView.setVisibility(View.GONE);
                 }
-
             }
+        });
 
+        nextButton.setOnClickListener(view -> {
+            nextButtonClick();
         });
 
         return rootView;
     }
 
+    private void checkButtonVisibility() {
+        if(descriptionNumber + 1 == numberOfAvailableSteps)
+            nextButton.setVisibility(View.GONE);
+        else
+            nextButton.setVisibility(View.VISIBLE);
+
+    }
+
+    private void nextButtonClick() {
+        Bundle bundle = new Bundle();
+        bundle.putString("recipe_name", recipeName);
+        bundle.putInt(KEY_DESCRIPTION_NUMBER, descriptionNumber + 1);
+        StepDescriptionFragment fragment = new StepDescriptionFragment();
+        fragment.setArguments(bundle);
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.step_description_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
     private void initializePlayer(Uri uri) {
-        if(exoPlayer == null){
+        if (exoPlayer == null) {
             // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
@@ -116,15 +138,6 @@ public class StepDescriptionFragment extends Fragment {
             exoPlayer.prepare(mediaSource);
             exoPlayer.setPlayWhenReady(true);
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        // Save the fragment's state here
-        outState.putString(KEY_RECIPE_NAME, recipeName);
-        outState.putInt(KEY_DESCRIPTION_NUMBER, descriptionNumber);
-        super.onSaveInstanceState(outState);
-
     }
 
     @Override
@@ -149,7 +162,7 @@ public class StepDescriptionFragment extends Fragment {
     }
 
     private void releasePlayer() {
-        if(exoPlayer != null){
+        if (exoPlayer != null) {
             exoPlayer.stop();
             exoPlayer.release();
             exoPlayer = null;

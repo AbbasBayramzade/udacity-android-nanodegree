@@ -26,7 +26,8 @@ public class StepDescriptionActivity extends AppCompatActivity {
 
             Log.d(TAG, "passed recipe name: " + getIntent().getExtras().getString(KEY_RECIPE_NAME));
             recipeName = getIntent().getExtras().getString(KEY_RECIPE_NAME);
-            descriptionNumber = getIntent().getExtras().getInt(KEY_DESCRIPTION_NUMBER);
+            descriptionNumber = getIntent().getExtras().getInt(KEY_DESCRIPTION_NUMBER) - 1;
+            Log.d(TAG, "description number: " + descriptionNumber);
         }
 
         Bundle bundle = new Bundle();

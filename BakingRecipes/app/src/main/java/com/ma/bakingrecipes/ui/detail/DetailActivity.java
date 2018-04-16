@@ -83,7 +83,7 @@ public class DetailActivity extends AppCompatActivity implements ItemFragment.On
                 intent = new Intent(DetailActivity.this, StepDescriptionActivity.class);
                 Log.d(TAG, "OPEN STEPS");
             }
-            intent.putExtra(KEY_POSITION, position);
+            intent.putExtra(KEY_DESCRIPTION_NUMBER, position);
             intent.putExtra(KEY_RECIPE_NAME, recipeName);
             startActivity(intent);
         }
