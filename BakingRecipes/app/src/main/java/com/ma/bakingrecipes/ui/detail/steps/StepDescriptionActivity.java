@@ -35,6 +35,7 @@ public class StepDescriptionActivity extends AppCompatActivity {
             bundle.putString("recipe_name", recipeName);
             bundle.putInt(KEY_DESCRIPTION_NUMBER, descriptionNumber);
             StepDescriptionFragment fragment = new StepDescriptionFragment();
+            fragment.setContext(this);
             fragment.setArguments(bundle);
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()

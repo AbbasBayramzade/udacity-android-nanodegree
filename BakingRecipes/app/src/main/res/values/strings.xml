@@ -6,4 +6,6 @@
     <string name="text_recipe_image">Recipe image</string>
     <string name="action_next">next</string>
     <string name="action_previous">previous</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

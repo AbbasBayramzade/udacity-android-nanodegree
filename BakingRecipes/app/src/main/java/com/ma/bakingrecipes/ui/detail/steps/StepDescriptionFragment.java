@@ -1,6 +1,8 @@
 package com.ma.bakingrecipes.ui.detail.steps;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.media.session.MediaSession;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -67,9 +69,14 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
     private int numberOfAvailableSteps;
     private MediaSessionCompat mediaSessionCompat;
     private PlaybackStateCompat.Builder stateBuilder;
+    private Context context;
 
     public StepDescriptionFragment() {
         // Required empty public constructor
+    }
+
+    public void setContext(Context context){
+        this.context = context;
     }
 
     @Override
@@ -179,8 +186,11 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
      * Source: https://github.com/udacity/AdvancedAndroid_ClassicalMusicQuiz
      */
     private void initializeMediaSession() {
+        Log.v(TAG, "Initialize media session");
         // Create a MediaSessionCompat.
         mediaSessionCompat = new MediaSessionCompat(getActivity(), TAG);
+
+        Log.v(TAG, "media session Initialized");
 
         // Enable callbacks from MediaButtons and TransportControls.
         mediaSessionCompat.setFlags(
@@ -199,7 +209,6 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
                                 PlaybackStateCompat.ACTION_PLAY_PAUSE);
 
         mediaSessionCompat.setPlaybackState(stateBuilder.build());
-
 
         // MySessionCallback has methods that handle callbacks from a media controller.
         mediaSessionCompat.setCallback(new MySessionCallback());
