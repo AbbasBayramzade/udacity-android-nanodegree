@@ -1,12 +1,14 @@
-package com.ma.bakingrecipes;
+package com.ma.bakingrecipes.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.widget.RemoteViews;
 
+import com.ma.bakingrecipes.R;
 import com.ma.bakingrecipes.ui.list.MainActivity;
 
 /**
@@ -14,20 +16,33 @@ import com.ma.bakingrecipes.ui.list.MainActivity;
  */
 public class RecipeWidgetProvider extends AppWidgetProvider {
 
+    public static String EXTRA_RECIPE=
+            "com.ma.bakingrecipes.widget.RECIPE";
+
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
+        
+        Intent svcIntent= new Intent(context, WidgetService.class);
+
+        svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
 
-        // create pending intent to open MainActivity on widget click
-        Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,0);
+        views.setRemoteAdapter(R.id.words,svcIntent);
 
-        views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
+        Intent clickIntent=new Intent(context, MainActivity.class);
+        PendingIntent clickPI=PendingIntent
+                .getActivity(context, 0,
+                        clickIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // Instruct the widget manager to update the widget
+        views.setPendingIntentTemplate(R.id.words, clickPI);
+     //   views.setOnClickPendingIntent(R.id.words, clickPI);
+
         appWidgetManager.updateAppWidget(appWidgetId, views);
+
     }
 
     @Override
@@ -36,6 +51,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     @Override
