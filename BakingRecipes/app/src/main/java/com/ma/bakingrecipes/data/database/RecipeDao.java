@@ -26,4 +26,7 @@ public interface RecipeDao {
 
     @Query("SELECT id, name, image FROM recipe")
     LiveData<List<RecyclerViewRecipeEntry>> getAllRecipes();
+
+    @Query("SELECT * FROM recipe WHERE name = :name")
+    Recipe getRecipe(String name);
 }

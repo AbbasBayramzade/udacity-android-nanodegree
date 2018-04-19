@@ -61,7 +61,6 @@ public class RecipeRepository {
         return recipeDao.getAllRecipes();
     }
 
-
     public LiveData<Recipe> getRecipeByName(String name){
         fetchRecipes();
         return recipeDao.getRecipeByName(name);

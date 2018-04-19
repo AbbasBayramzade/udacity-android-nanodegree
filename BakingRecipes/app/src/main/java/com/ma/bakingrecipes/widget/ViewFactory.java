@@ -1,52 +1,51 @@
 package com.ma.bakingrecipes.widget;
 
-import android.appwidget.AppWidgetManager;
-import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.ma.bakingrecipes.R;
-import com.ma.bakingrecipes.data.RecipeRepository;
+import com.ma.bakingrecipes.data.database.BakingDatabase;
+import com.ma.bakingrecipes.data.database.RecipeDao;
 import com.ma.bakingrecipes.model.Ingredient;
-import com.ma.bakingrecipes.utilities.InjectorUtils;
+import com.ma.bakingrecipes.model.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewFactory implements RemoteViewsService.RemoteViewsFactory {
+public class ViewFactory implements RemoteViewsService.RemoteViewsFactory, DownloadRecipeTask.GetRecipeListener {
 
-    private List<String> ingredientList = new ArrayList<>();
-    private int appWidgetId;
+    private static final String TAG = ViewFactory.class.getName();
+
+    private List<Ingredient> ingredientList = new ArrayList<>();
     private Context context;
+    private Recipe recipe;
+    private int mAppWidgetId;
 
 
     public ViewFactory(Context context, Intent intent) {
         this.context = context;
-        // TODO: get ingredients list for one of the recipes.
-//        RecipeRepository recipeRepository = InjectorUtils.provideRepository(context);
-//        ingredientList = recipeRepository.getRecipeByName("Nutella Pie")
-//                .getValue().getIngredients();
-
-        ingredientList.add("ing1");
-        ingredientList.add("ing2");
-
-
-        appWidgetId=intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 
 
     @Override
-    public void onCreate() {
+    public void onRemoteCallComplete(Recipe recipe) {
+        this.recipe = recipe;
+        Log.v(TAG, "recipe name: " + recipe.getName());
+        ingredientList = this.recipe.getIngredients();
+        Log.v(TAG, "ingredient: " + ingredientList.get(0).getIngredient());
+    }
 
+    @Override
+    public void onCreate() {
+        new DownloadRecipeTask(this.context, this).execute();
     }
 
     @Override
     public void onDataSetChanged() {
-
     }
 
     @Override
@@ -56,24 +55,30 @@ public class ViewFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getCount() {
+        Log.d(TAG, "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&7" +
+                "ingredient: " + ingredientList.size());
         return ingredientList.size();
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
+
         RemoteViews row=new RemoteViews(context.getPackageName(),
                 R.layout.row);
 
-        row.setTextViewText(android.R.id.text1, ingredientList.get(position));
+        Log.d(TAG, "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&7" +
+                "ingredient test: " + ingredientList.get(position).getIngredient());
 
-        Intent i=new Intent();
+        row.setTextViewText(R.id.text, ingredientList.get(position).getIngredient());
+
+        Intent i = new Intent();
         Bundle extras=new Bundle();
 
-        extras.putString(RecipeWidgetProvider.EXTRA_RECIPE, ingredientList.get(position));
+        extras.putString(RecipeWidgetProvider.EXTRA_RECIPE, ingredientList.get(position).getIngredient());
         i.putExtras(extras);
-        row.setOnClickFillInIntent(android.R.id.text1, i);
+        row.setOnClickFillInIntent(R.id.text, i);
 
-        return(row);
+        return row;
     }
 
     @Override

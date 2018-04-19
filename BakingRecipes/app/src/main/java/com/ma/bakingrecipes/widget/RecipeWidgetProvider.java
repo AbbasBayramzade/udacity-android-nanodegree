@@ -9,7 +9,10 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.ma.bakingrecipes.R;
+import com.ma.bakingrecipes.model.Ingredient;
 import com.ma.bakingrecipes.ui.list.MainActivity;
+
+import java.util.List;
 
 /**
  * Implementation of App Widget functionality.
@@ -19,31 +22,6 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     public static String EXTRA_RECIPE=
             "com.ma.bakingrecipes.widget.RECIPE";
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
-        
-        Intent svcIntent= new Intent(context, WidgetService.class);
-
-        svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
-
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
-
-        views.setRemoteAdapter(R.id.words,svcIntent);
-
-        Intent clickIntent=new Intent(context, MainActivity.class);
-        PendingIntent clickPI=PendingIntent
-                .getActivity(context, 0,
-                        clickIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-
-        views.setPendingIntentTemplate(R.id.words, clickPI);
-     //   views.setOnClickPendingIntent(R.id.words, clickPI);
-
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-
-    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -52,6 +30,31 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
+    }
+
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+
+        // Construct the RemoteViews object
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
+
+        Intent intent= new Intent(context, WidgetService.class);
+
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+
+        views.setRemoteAdapter(appWidgetId,R.id.widget_listview,intent);
+
+        Intent clickIntent=new Intent(context, MainActivity.class);
+        PendingIntent clickPI=PendingIntent
+                .getActivity(context, 0,
+                        clickIntent,
+                        0);
+
+       views.setPendingIntentTemplate(R.id.widget_listview, clickPI);
+      //  views.setOnClickPendingIntent(R.id.widget_listview, clickPI);
+
+        appWidgetManager.updateAppWidget(appWidgetId, views);
+
     }
 
     @Override

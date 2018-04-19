@@ -23,7 +23,7 @@ public class InjectorUtils {
         return RetrofitClient.getClient(BASE_URL).create(RecipeService.class);
     }
 
-    private static RecipeRepository provideRepository(Context context) {
+    public static RecipeRepository provideRepository(Context context) {
         BakingDatabase database = BakingDatabase.getInstance(context.getApplicationContext());
             AppExecutor executor = AppExecutor.getInstance();
             RecipeNetworkDataSource networkDataSource =

@@ -1,5 +1,22 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/words"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="3dp" />
+    android:background="?android:colorBackground"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/widget_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:padding="8dp"
+        android:text="@string/app_name"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textColor="?android:attr/textColorPrimaryInverse" />
+
+    <ListView
+        android:id="@+id/widget_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
