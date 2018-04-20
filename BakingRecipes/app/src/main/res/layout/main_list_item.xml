@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
-    android:background="@android:color/white"
+    android:background="@color/colorLight"
     android:layout_margin="16dp"
     android:paddingBottom="@dimen/list_item_padding_vertical"
     android:paddingLeft="@dimen/list_item_padding_horizontal"

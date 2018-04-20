@@ -14,8 +14,6 @@ import com.ma.bakingrecipes.ui.detail.steps.StepDescriptionFragment;
 public class DetailActivity extends AppCompatActivity implements ItemFragment.OnItemClickListener {
 
     private final String TAG = DetailActivity.class.getName();
-
-    private final String KEY_POSITION = "CLICKED_POSITION";
     private final String KEY_RECIPE_NAME = "recipe_name";
     private final String KEY_DESCRIPTION_NUMBER = "description_number";
 
