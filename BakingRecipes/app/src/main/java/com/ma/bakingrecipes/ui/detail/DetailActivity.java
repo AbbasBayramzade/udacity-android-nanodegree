@@ -4,12 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.ma.bakingrecipes.R;
 import com.ma.bakingrecipes.ui.detail.ingredients.IngredientFragment;
 import com.ma.bakingrecipes.ui.detail.ingredients.IngredientsActivity;
 import com.ma.bakingrecipes.ui.detail.steps.StepDescriptionActivity;
 import com.ma.bakingrecipes.ui.detail.steps.StepDescriptionFragment;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class DetailActivity extends AppCompatActivity implements ItemFragment.OnItemClickListener {
 
@@ -20,10 +24,15 @@ public class DetailActivity extends AppCompatActivity implements ItemFragment.On
     private boolean isTablet;
     private String recipeName;
 
+    @BindView(R.id.pie_name)
+    TextView pieName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        ButterKnife.bind(this);
 
         if(savedInstanceState != null ){
             recipeName = savedInstanceState.getString(KEY_RECIPE_NAME);
@@ -35,6 +44,8 @@ public class DetailActivity extends AppCompatActivity implements ItemFragment.On
                 recipeName = getIntent().getExtras().getString(KEY_RECIPE_NAME);
             }
         }
+
+        pieName.setText(recipeName);
 
         Log.d(TAG, "RECIPE NAME " + recipeName);
 
