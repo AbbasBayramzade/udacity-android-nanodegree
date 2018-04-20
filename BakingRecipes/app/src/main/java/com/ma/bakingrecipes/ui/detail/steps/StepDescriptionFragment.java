@@ -162,7 +162,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
             fragment.setArguments(bundle);
 
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.step_description_container, fragment);
+            transaction.replace(R.id.container, fragment);
             transaction.commit();
 
         } else {
@@ -174,7 +174,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
             fragment.setArguments(bundle);
 
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.step_description_container, fragment);
+            transaction.replace(R.id.container, fragment);
             transaction.addToBackStack(null);
             transaction.commit();
         }
@@ -233,7 +233,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
         fragment.setArguments(bundle);
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.step_description_container, fragment);
+        transaction.replace(R.id.container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }

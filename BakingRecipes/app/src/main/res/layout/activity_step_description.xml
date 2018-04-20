@@ -11,7 +11,7 @@
         android:orientation="vertical">
         
         <FrameLayout
-            android:id="@+id/step_description_container"
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         

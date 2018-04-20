@@ -39,7 +39,7 @@ public class StepDescriptionActivity extends AppCompatActivity {
             fragment.setArguments(bundle);
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .add(R.id.step_description_container, fragment)
+                    .add(R.id.container, fragment)
                     .commit();
         }
 

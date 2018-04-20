@@ -58,7 +58,6 @@ public class DetailActivity extends AppCompatActivity implements ItemFragment.On
         if (isTablet) {
             Bundle bundle = new Bundle();
             bundle.putString("recipe_name", recipeName);
-            bundle.putInt(KEY_DESCRIPTION_NUMBER, position);
 
             if (position == 0) {
                 IngredientFragment fragment = new IngredientFragment();
@@ -68,6 +67,7 @@ public class DetailActivity extends AppCompatActivity implements ItemFragment.On
                         .commit();
             } else {
                 StepDescriptionFragment fragment = new StepDescriptionFragment();
+                bundle.putInt(KEY_DESCRIPTION_NUMBER, position -1);
                 fragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fragment)
