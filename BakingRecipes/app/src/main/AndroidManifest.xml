@@ -21,7 +21,7 @@
         <activity
             android:name=".ui.detail.DetailActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".ui.list.MainActivity"></activity>
+            android:parentActivityName=".ui.list.MainActivity"/>
         <activity
             android:name=".ui.detail.steps.StepDescriptionActivity"
             android:parentActivityName=".ui.detail.DetailActivity" />
@@ -34,15 +34,17 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".widget.RecipeWidgetProvider">
+        <receiver android:name=".widget.WidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/recipe_widget_provider_info" />
+                android:resource="@xml/widget_provider" />
         </receiver>
+        <service android:name=".widget.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
     </application>
 

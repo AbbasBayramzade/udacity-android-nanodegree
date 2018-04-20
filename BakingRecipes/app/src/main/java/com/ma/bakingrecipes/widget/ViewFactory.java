@@ -1,8 +1,12 @@
 package com.ma.bakingrecipes.widget;
 
+import android.annotation.SuppressLint;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -15,89 +19,124 @@ import com.ma.bakingrecipes.model.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class ViewFactory implements RemoteViewsService.RemoteViewsFactory, DownloadRecipeTask.GetRecipeListener {
+public class ViewFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private static final String TAG = ViewFactory.class.getName();
-
     private List<Ingredient> ingredientList = new ArrayList<>();
-    private Context context;
-    private Recipe recipe;
-    private int mAppWidgetId;
+
+    private Context ctxt;
+    private int appWidgetId;
 
 
-    public ViewFactory(Context context, Intent intent) {
-        this.context = context;
-    }
+    public ViewFactory(Context ctxt, Intent intent) {
+        this.ctxt = ctxt;
+        appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                AppWidgetManager.INVALID_APPWIDGET_ID);
+        final Handler handler = new Handler();
+        Timer timer = new Timer();
+        TimerTask doAsynchronousTask = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(() -> {
+                    try {
+                        new DownloadTask(ctxt).execute();
+                    } catch (Exception ignored) {
+                    }
+                });
+            }
+        };
+        timer.schedule(doAsynchronousTask, 0, 60000);
 
-
-    @Override
-    public void onRemoteCallComplete(Recipe recipe) {
-        this.recipe = recipe;
-        Log.v(TAG, "recipe name: " + recipe.getName());
-        ingredientList = this.recipe.getIngredients();
-        Log.v(TAG, "ingredient: " + ingredientList.get(0).getIngredient());
     }
 
     @Override
     public void onCreate() {
-        new DownloadRecipeTask(this.context, this).execute();
+        //
+    }
+
+    @Override
+    public void onDestroy() {
+    }
+
+    @Override
+    public int getCount() {
+        Log.d(TAG,
+                "ingredient: " + ingredientList.size());
+        return ingredientList.size();
+    }
+
+
+    @Override
+    public RemoteViews getViewAt(int position) {
+        RemoteViews row = new RemoteViews(ctxt.getPackageName(),
+                R.layout.row);
+        Log.d(TAG,
+                "text in getViewAt: " + ingredientList.get(position).getIngredient());
+        // set text of listview item at corresponding position
+        row.setTextViewText(android.R.id.text1, ingredientList.get(position).getIngredient());
+
+        Intent i = new Intent();
+        row.setOnClickFillInIntent(android.R.id.text1, i);
+
+        return (row);
+    }
+
+    @Override
+    public RemoteViews getLoadingView() {
+        return (null);
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return (1);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return (position);
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return (true);
     }
 
     @Override
     public void onDataSetChanged() {
     }
 
-    @Override
-    public void onDestroy() {
 
-    }
+    private class DownloadTask extends AsyncTask<Void, Void, Recipe> {
 
-    @Override
-    public int getCount() {
-        Log.d(TAG, "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&7" +
-                "ingredient: " + ingredientList.size());
-        return ingredientList.size();
-    }
+        private final String TAG = DownloadTask.class.getName();
 
-    @Override
-    public RemoteViews getViewAt(int position) {
+        @SuppressLint("StaticFieldLeak")
+        private Context context;
 
-        RemoteViews row=new RemoteViews(context.getPackageName(),
-                R.layout.row);
+        private DownloadTask(Context context) {
+            this.context = context;
+        }
 
-        Log.d(TAG, "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&7" +
-                "ingredient test: " + ingredientList.get(position).getIngredient());
+        @Override
+        protected Recipe doInBackground(Void... voids) {
+            Log.i(TAG, "doinBackground call");
+            BakingDatabase database = BakingDatabase.getInstance(context);
+            RecipeDao re = database.recipeDao();
+            // get recipe for the 'Nutella Pie'
+            return re.getRecipe("Nutella Pie");
+        }
 
-        row.setTextViewText(R.id.text, ingredientList.get(position).getIngredient());
-
-        Intent i = new Intent();
-        Bundle extras=new Bundle();
-
-        extras.putString(RecipeWidgetProvider.EXTRA_RECIPE, ingredientList.get(position).getIngredient());
-        i.putExtras(extras);
-        row.setOnClickFillInIntent(R.id.text, i);
-
-        return row;
-    }
-
-    @Override
-    public RemoteViews getLoadingView() {
-        return null;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 1;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return true;
+        @Override
+        protected void onPostExecute(Recipe recipe) {
+            // update ingredients list
+            ingredientList = recipe.getIngredients();
+            // notify widget manager about data set change
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(ctxt);
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetManager.getAppWidgetIds(
+                    new ComponentName(ctxt, WidgetProvider.class)), R.id.words);
+        }
     }
 }
