@@ -1,11 +1,12 @@
 <resources>
     <string name="app_name">Baking Recipes</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_recipe_image">Recipe image</string>
     <string name="action_next">next</string>
     <string name="action_previous">previous</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="message_exo_prev">Exo Player Previous image button</string>
+    <string name="message_exo_play">Exo Player play image button</string>
+    <string name="message_exo_pause">Exo Player Pause image button</string>
 </resources>

@@ -7,14 +7,14 @@
         android:id="@+id/recyclerview_recipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/view_padding_or_margin"
         android:clipToPadding="false"
-        android:paddingBottom="8dp"
-        android:layout_margin="8dp"/>
+        android:paddingBottom="@dimen/view_padding_or_margin" />
 
     <ProgressBar
         android:id="@+id/pb_loading_indicator"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="@dimen/progress_bar_width_height"
+        android:layout_height="@dimen/progress_bar_width_height"
         android:layout_gravity="center"
         android:visibility="invisible" />
 

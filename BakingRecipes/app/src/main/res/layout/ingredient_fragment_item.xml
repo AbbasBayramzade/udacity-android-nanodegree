@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:padding="8dp"
+        android:padding="@dimen/view_padding_or_margin"
         android:textAppearance="?android:textAppearanceMedium"
         android:textStyle="bold"
         tools:text="2 CUPS SUGAR" />

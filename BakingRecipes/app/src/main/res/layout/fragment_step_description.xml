@@ -1,45 +1,47 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/list_item_padding_horizontal">
 
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:id="@+id/exo_player_view"
             android:layout_width="match_parent"
-            android:layout_height="250dp" />
+            android:layout_height="@dimen/view_height" />
 
         <ImageView
             android:id="@+id/step_image"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:visibility="gone"/>
+            android:layout_height="@dimen/view_height"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/next_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/colorLight"
             android:text="@string/action_next" />
 
         <Button
             android:id="@+id/previous_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/colorButton"
             android:text="@string/action_previous" />
 
         <TextView
             android:id="@+id/step_description_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/view_padding_or_margin"
             android:textAppearance="?android:textAppearanceLarge"
             android:textColor="@android:color/black"
-            android:layout_margin="8dp"
-            tools:text = "Step description text."/>
+            tools:text="Step description text." />
 
     </LinearLayout>
 </ScrollView>

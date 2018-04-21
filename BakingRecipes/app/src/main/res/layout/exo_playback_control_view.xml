@@ -11,12 +11,14 @@
      limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:layoutDirection="ltr"
     android:background="#CC000000"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="UnusedAttribute">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,13 +28,16 @@
         android:orientation="horizontal">
 
         <ImageButton android:id="@id/exo_prev"
-            style="@style/ExoMediaButton.Previous"/>
+            style="@style/ExoMediaButton.Previous"
+            android:contentDescription="@string/message_exo_prev"/>
 
         <ImageButton android:id="@id/exo_play"
-            style="@style/ExoMediaButton.Play"/>
+            style="@style/ExoMediaButton.Play"
+            android:contentDescription="@string/message_exo_play"/>
 
         <ImageButton android:id="@id/exo_pause"
-            style="@style/ExoMediaButton.Pause"/>
+            style="@style/ExoMediaButton.Pause"
+            android:contentDescription="@string/message_exo_pause"/>
 
     </LinearLayout>
 
@@ -51,7 +56,7 @@
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:includeFontPadding="false"
-            android:textColor="#FFBEBEBE"/>
+            android:textColor="@color/colorExo"/>
 
         <SeekBar android:id="@id/exo_progress"
             android:layout_width="0dp"
@@ -68,7 +73,7 @@
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:includeFontPadding="false"
-            android:textColor="#FFBEBEBE"/>
+            android:textColor="@color/colorExo"/>
 
     </LinearLayout>
 

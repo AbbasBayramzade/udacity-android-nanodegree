@@ -9,13 +9,14 @@
     <TextView
         android:id="@+id/pie_name"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        tools:text = "Nutella Pie"
-        android:textStyle="bold"
+        android:layout_height="@dimen/text_recipe_name_height"
         android:gravity="center"
-        android:textAppearance="?android:textAppearanceLarge"/>
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textStyle="bold"
+        tools:text="Nutella Pie" />
 
-    <FrameLayout android:id="@+id/item_container"
+    <FrameLayout
+        android:id="@+id/item_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

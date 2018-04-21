@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:baselineAligned="false"
-    android:background="@android:color/white">
+    android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="400dp"
@@ -15,13 +15,14 @@
         <TextView
             android:id="@+id/pie_name"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            tools:text = "Nutella Pie"
-            android:textStyle="bold"
+            android:layout_height="@dimen/text_recipe_name_height"
             android:gravity="center"
-            android:textAppearance="?android:textAppearanceLarge"/>
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textStyle="bold"
+            tools:text="Nutella Pie" />
 
-        <FrameLayout android:id="@+id/item_container"
+        <FrameLayout
+            android:id="@+id/item_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -31,20 +32,21 @@
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray" />
 
     <LinearLayout
         android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_gravity="center_vertical"
-        android:padding="16dp">
+        android:orientation="vertical"
+        android:padding="@dimen/list_item_padding_horizontal">
 
-        <FrameLayout android:id="@+id/container"
+        <FrameLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerInside"/>
+            android:scaleType="centerInside" />
 
     </LinearLayout>
 
