@@ -5,6 +5,7 @@ import android.content.Context;
 import android.media.session.MediaSession;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -51,6 +52,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
 
     private final String TAG = StepDescriptionFragment.class.getName();
     private final String KEY_RECIPE_NAME = "recipe_name";
+    private final String KEY_EXO_POSITION = "exo_position";
     private final String KEY_DESCRIPTION_NUMBER = "description_number";
     @BindView(R.id.exo_player_view)
     SimpleExoPlayerView playerView;
@@ -70,6 +72,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
     private MediaSessionCompat mediaSessionCompat;
     private PlaybackStateCompat.Builder stateBuilder;
     private Context context;
+    private long exoPlayerPosition = 0;
 
     public StepDescriptionFragment() {
         // Required empty public constructor
@@ -87,6 +90,9 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
                 container, false);
 
         ButterKnife.bind(this, rootView);
+
+        if(savedInstanceState != null)
+            exoPlayerPosition = savedInstanceState.getLong(KEY_EXO_POSITION);
 
         if (getArguments() != null && getArguments().containsKey(KEY_RECIPE_NAME)
                 && getArguments().containsKey(KEY_DESCRIPTION_NUMBER)) {
@@ -254,6 +260,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
                     getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
             exoPlayer.prepare(mediaSource);
             exoPlayer.setPlayWhenReady(true);
+            exoPlayer.seekTo(exoPlayerPosition);
         }
     }
 
@@ -281,10 +288,17 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
 
     private void releasePlayer() {
         if (exoPlayer != null) {
+            exoPlayerPosition = exoPlayer.getCurrentPosition();
             exoPlayer.stop();
             exoPlayer.release();
             exoPlayer = null;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(KEY_EXO_POSITION, exoPlayerPosition);
     }
 
     @Override
