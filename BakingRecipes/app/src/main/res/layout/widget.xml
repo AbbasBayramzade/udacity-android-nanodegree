@@ -13,7 +13,7 @@
         android:padding="@dimen/view_padding_or_margin"
         android:text="@string/app_name"
         android:textAppearance="?android:textAppearanceLarge"
-        android:textColor="?android:attr/textColorPrimaryInverse" />
+        android:textColor="@color/colorWhite" />
 
     <ListView
         android:id="@+id/words"

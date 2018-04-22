@@ -6,6 +6,6 @@
     android:name="com.ma.bakingrecipes.ui.detail.ingredients.IngredientFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/text_margin"
     app:layoutManager="LinearLayoutManager"
+    android:background="@color/colorPurpleLight"
     tools:listitem="@layout/ingredient_fragment_item" />

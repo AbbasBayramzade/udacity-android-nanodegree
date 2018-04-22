@@ -13,7 +13,10 @@
         android:id="@+id/cv_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/view_padding_or_margin" />
+        android:layout_margin="@dimen/view_padding_or_margin"
+        android:gravity="center_vertical"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:textStyle="bold"/>
 
 </android.support.v7.widget.CardView>
 

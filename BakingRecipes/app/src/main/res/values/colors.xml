@@ -2,8 +2,10 @@
 <resources>
     <color name="colorPrimary">#9C27B0</color>
     <color name="colorPrimaryDark">#7B1FA2</color>
-    <color name="colorLight">#F0F4C3</color>
-    <color name="colorButton">#FFE0B2</color>
+    <color name="colorNext">#0091ea</color>
+    <color name="colorPrevious">#64dd17</color>
     <color name="colorAccent">#03A9F4</color>
     <color name="colorExo">#FFBEBEBE</color>
+    <color name="colorWhite">#FFFF</color>
+    <color name="colorPurpleLight">#f3e5f5</color>
 </resources>

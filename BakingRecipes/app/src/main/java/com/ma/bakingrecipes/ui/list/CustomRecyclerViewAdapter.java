@@ -40,7 +40,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     @Override
     public CustomRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.main_list_item, parent, false);
+                .inflate(R.layout.list_item_main, parent, false);
         return new ViewHolder(view);
     }
 
