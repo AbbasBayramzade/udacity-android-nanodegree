@@ -2,7 +2,6 @@ package com.ma.bakingrecipes.ui.detail.steps;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.media.session.MediaSession;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -53,6 +52,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
     private final String TAG = StepDescriptionFragment.class.getName();
     private final String KEY_RECIPE_NAME = "recipe_name";
     private final String KEY_EXO_POSITION = "exo_position";
+    private final String KEY_EXO_PLAYER_STATE = "eox_player_state";
     private final String KEY_DESCRIPTION_NUMBER = "description_number";
     @BindView(R.id.exo_player_view)
     SimpleExoPlayerView playerView;
@@ -73,6 +73,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
     private PlaybackStateCompat.Builder stateBuilder;
     private Context context;
     private long exoPlayerPosition = 0;
+    private boolean playWhenReady = false;
 
     public StepDescriptionFragment() {
         // Required empty public constructor
@@ -91,8 +92,11 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
 
         ButterKnife.bind(this, rootView);
 
-        if(savedInstanceState != null)
+        if(savedInstanceState != null){
             exoPlayerPosition = savedInstanceState.getLong(KEY_EXO_POSITION);
+            playWhenReady = savedInstanceState.getBoolean(KEY_EXO_PLAYER_STATE);
+        }
+
 
         if (getArguments() != null && getArguments().containsKey(KEY_RECIPE_NAME)
                 && getArguments().containsKey(KEY_DESCRIPTION_NUMBER)) {
@@ -140,8 +144,6 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
             // change visibility of an imageview
             initializePlayer(Uri.parse(step.getVideoURL()));
 
-        } else if (!step.getThumbnailURL().isEmpty()) {
-            initializePlayer(Uri.parse(step.getThumbnailURL()));
         } else {
             // change visibility of a playerview and an imageview
             // display recipe image
@@ -259,7 +261,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
             MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(
                     getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
             exoPlayer.prepare(mediaSource);
-            exoPlayer.setPlayWhenReady(true);
+            exoPlayer.setPlayWhenReady(playWhenReady);
             exoPlayer.seekTo(exoPlayerPosition);
         }
     }
@@ -289,6 +291,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
     private void releasePlayer() {
         if (exoPlayer != null) {
             exoPlayerPosition = exoPlayer.getCurrentPosition();
+            playWhenReady = exoPlayer.getPlayWhenReady();
             exoPlayer.stop();
             exoPlayer.release();
             exoPlayer = null;
@@ -299,6 +302,7 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putLong(KEY_EXO_POSITION, exoPlayerPosition);
+        outState.putBoolean(KEY_EXO_PLAYER_STATE, playWhenReady);
     }
 
     @Override
