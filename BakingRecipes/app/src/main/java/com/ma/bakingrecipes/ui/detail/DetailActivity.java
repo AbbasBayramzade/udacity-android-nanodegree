@@ -43,20 +43,21 @@ public class DetailActivity extends AppCompatActivity implements ItemFragment.On
                 Log.d(TAG, "passed recipe name: " + getIntent().getExtras().getString(KEY_RECIPE_NAME));
                 recipeName = getIntent().getExtras().getString(KEY_RECIPE_NAME);
             }
+
+            Bundle bundle = new Bundle();
+            bundle.putString(KEY_RECIPE_NAME, recipeName);
+
+            ItemFragment fragment = new ItemFragment();
+            fragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.item_container, fragment)
+                    .commit();
         }
 
         pieName.setText(recipeName);
 
         Log.d(TAG, "RECIPE NAME " + recipeName);
 
-        Bundle bundle = new Bundle();
-        bundle.putString(KEY_RECIPE_NAME, recipeName);
-
-        ItemFragment fragment = new ItemFragment();
-        fragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.item_container, fragment)
-                .commit();
 
         // check if device is a tablet
         isTablet = getResources().getBoolean(R.bool.isTablet);

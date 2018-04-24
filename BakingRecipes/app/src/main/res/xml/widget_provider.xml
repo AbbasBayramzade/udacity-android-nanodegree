@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:configure="com.ma.bakingrecipes.widget.WidgetConfigureActivity"
     android:initialLayout="@layout/widget"
+    android:initialKeyguardLayout="@layout/widget"
     android:autoAdvanceViewId="@+id/words"
     android:minHeight="150dp"
     android:minWidth="200dp"
     android:previewImage="@mipmap/ic_launcher"
     android:resizeMode="horizontal|vertical"
-    android:updatePeriodMillis="1800000" />
+    android:updatePeriodMillis="1800000"
+    android:widgetCategory="home_screen"
+    tools:ignore="UnusedAttribute" />

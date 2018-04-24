@@ -21,7 +21,7 @@
         <activity
             android:name=".ui.detail.DetailActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".ui.list.MainActivity"/>
+            android:parentActivityName=".ui.list.MainActivity" />
         <activity
             android:name=".ui.detail.steps.StepDescriptionActivity"
             android:parentActivityName=".ui.detail.DetailActivity" />
@@ -29,11 +29,20 @@
             android:name=".ui.detail.ingredients.IngredientsActivity"
             android:parentActivityName=".ui.detail.DetailActivity" />
 
+        <activity android:name="com.ma.bakingrecipes.widget.WidgetConfigureActivity"
+            android:theme="@android:style/Theme.Dialog"
+            android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
         <receiver android:name="android.support.v4.media.session.MediaButtonReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
+
         <receiver android:name=".widget.WidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -43,9 +52,10 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_provider" />
         </receiver>
-        <service android:name=".widget.WidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
+        <service
+            android:name=".widget.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>

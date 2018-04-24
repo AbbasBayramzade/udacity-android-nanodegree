@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -29,12 +30,17 @@ public class ViewFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private Context ctxt;
     private int appWidgetId;
+    private String recipeName;
 
 
-    public ViewFactory(Context ctxt, Intent intent) {
+    ViewFactory(Context ctxt, Intent intent) {
         this.ctxt = ctxt;
+
         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
+
+        recipeName = intent.getStringExtra("recipe_name");
+
         final Handler handler = new Handler();
         Timer timer = new Timer();
         TimerTask doAsynchronousTask = new TimerTask() {
@@ -42,7 +48,7 @@ public class ViewFactory implements RemoteViewsService.RemoteViewsFactory {
             public void run() {
                 handler.post(() -> {
                     try {
-                        new DownloadTask(ctxt).execute();
+                        new DownloadTask(ctxt).execute(recipeName);
                     } catch (Exception ignored) {
                     }
                 });
@@ -75,9 +81,12 @@ public class ViewFactory implements RemoteViewsService.RemoteViewsFactory {
                 R.layout.row);
         Log.d(TAG,
                 "text in getViewAt: " + ingredientList.get(position).getIngredient());
+
         // set text of listview item at corresponding position
         row.setTextViewText(android.R.id.text1, ingredientList.get(position).getIngredient());
 
+        Bundle bundle = new Bundle();
+        bundle.putString("recipe_name", recipeName);
         Intent i = new Intent();
         row.setOnClickFillInIntent(android.R.id.text1, i);
 
@@ -109,7 +118,7 @@ public class ViewFactory implements RemoteViewsService.RemoteViewsFactory {
     }
 
 
-    private class DownloadTask extends AsyncTask<Void, Void, Recipe> {
+    private class DownloadTask extends AsyncTask<String, Void, Recipe> {
 
         private final String TAG = DownloadTask.class.getName();
 
@@ -121,12 +130,11 @@ public class ViewFactory implements RemoteViewsService.RemoteViewsFactory {
         }
 
         @Override
-        protected Recipe doInBackground(Void... voids) {
-            Log.i(TAG, "doinBackground call");
+        protected Recipe doInBackground(String... text) {
+            Log.v(TAG, "doinBackground call ***********");
             BakingDatabase database = BakingDatabase.getInstance(context);
             RecipeDao re = database.recipeDao();
-            // get recipe for the 'Nutella Pie'
-            return re.getRecipe("Nutella Pie");
+            return re.getRecipe(text[0]);
         }
 
         @Override
