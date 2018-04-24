@@ -2,6 +2,7 @@ package com.ma.bakingrecipes.ui.detail.steps;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -150,14 +151,25 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
             playerView.setVisibility(View.GONE);
             stepImage.setVisibility(View.VISIBLE);
 
-            if(recipe.getImage().isEmpty())
+            if(recipe.getImage().isEmpty() && step.getThumbnailURL().isEmpty())
                 stepImage.setImageResource(R.drawable.ic_recipe_placeholer_image);
-            else
-                Picasso.with(getContext())
-                        .load(recipe.getImage())
-                        .placeholder(R.drawable.ic_recipe_placeholer_image)
-                        .error(R.drawable.ic_recipe_placeholer_image)
-                        .into(stepImage);
+            else{
+                if(!step.getThumbnailURL().isEmpty())
+                    Picasso.with(getContext())
+                            .load(step.getThumbnailURL())
+                            .placeholder(R.drawable.ic_recipe_placeholer_image)
+                            .error(R.drawable.ic_recipe_placeholer_image)
+                            .into(stepImage);
+                else{
+                    if(!recipe.getImage().isEmpty())
+                        Picasso.with(getContext())
+                                .load(recipe.getImage())
+                                .placeholder(R.drawable.ic_recipe_placeholer_image)
+                                .error(R.drawable.ic_recipe_placeholer_image)
+                                .into(stepImage);
+                }
+            }
+
         }
     }
 

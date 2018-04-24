@@ -6,7 +6,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -29,16 +28,11 @@ public class ViewFactory implements RemoteViewsService.RemoteViewsFactory {
     private List<Ingredient> ingredientList = new ArrayList<>();
 
     private Context ctxt;
-    private int appWidgetId;
     private String recipeName;
 
 
     ViewFactory(Context ctxt, Intent intent) {
         this.ctxt = ctxt;
-
-        appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                AppWidgetManager.INVALID_APPWIDGET_ID);
-
         recipeName = intent.getStringExtra("recipe_name");
 
         final Handler handler = new Handler();
@@ -60,7 +54,6 @@ public class ViewFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onCreate() {
-        //
     }
 
     @Override
@@ -84,11 +77,6 @@ public class ViewFactory implements RemoteViewsService.RemoteViewsFactory {
 
         // set text of listview item at corresponding position
         row.setTextViewText(android.R.id.text1, ingredientList.get(position).getIngredient());
-
-//        Bundle bundle = new Bundle();
-//        bundle.putString("recipe_name", recipeName);
-//        Intent i = new Intent();
-//        row.setOnClickFillInIntent(android.R.id.text1, i);
 
         return (row);
     }

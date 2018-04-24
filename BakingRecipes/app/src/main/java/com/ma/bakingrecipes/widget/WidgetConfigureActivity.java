@@ -2,7 +2,6 @@ package com.ma.bakingrecipes.widget;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -102,13 +101,7 @@ public class WidgetConfigureActivity extends Activity {
     // If there is no preference saved, get the default from a resource
     static String loadTitlePref(Context context, int appWidgetId) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        String titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId, "Nutella Pie");
-        return titleValue;
-//        if (titleValue != null) {
-//            return titleValue;
-//        } else {
-//            return "Nutella Pie";
-//        }
+        return prefs.getString(PREF_PREFIX_KEY + appWidgetId, "Nutella Pie");
     }
 
     static void deleteTitlePref(Context context, int appWidgetId) {
