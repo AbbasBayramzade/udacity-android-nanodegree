@@ -43,3 +43,5 @@ findViewById a bunch of times, or something similar.
 
 
 #### Screenshots
+
+See app screenshots [here](https://github.com/amatanat/udacity-android-nanodegree/tree/master/BakingRecipes/screenshots)
