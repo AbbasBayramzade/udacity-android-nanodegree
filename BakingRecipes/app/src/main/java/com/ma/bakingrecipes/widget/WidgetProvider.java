@@ -68,17 +68,17 @@ public class WidgetProvider extends AppWidgetProvider {
 
         Log.v("WIDGET PROVIDER", "adapter ***** " + widgetText);
 
-
-        Intent clickIntent = new Intent(context, DetailActivity.class);
-        clickIntent.putExtra("recipe_name", widgetText.toString());
-
-        Log.v("WIDGET PROVIDER", "$$$$$$$$$$$$$$ " + widgetText.toString());
-        PendingIntent clickPI = PendingIntent
-                .getActivity(context, 0,
-                        clickIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-
-        views.setPendingIntentTemplate(R.id.words, clickPI);
+//
+//        Intent clickIntent = new Intent(context, DetailActivity.class);
+//        clickIntent.putExtra("recipe_name", widgetText.toString());
+//
+//        Log.v("WIDGET PROVIDER", "$$$$$$$$$$$$$$ " + widgetText.toString());
+//        PendingIntent clickPI = PendingIntent
+//                .getActivity(context, 0,
+//                        clickIntent,
+//                        PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        views.setPendingIntentTemplate(R.id.words, clickPI);
 
 
         appWidgetManager.updateAppWidget(appWidgetId, views);

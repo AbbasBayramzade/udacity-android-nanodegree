@@ -52,12 +52,10 @@ public class DetailActivity extends AppCompatActivity implements ItemFragment.On
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.item_container, fragment)
                     .commit();
+            Log.d(TAG, "RECIPE NAME " + recipeName);
         }
 
         pieName.setText(recipeName);
-
-        Log.d(TAG, "RECIPE NAME " + recipeName);
-
 
         // check if device is a tablet
         isTablet = getResources().getBoolean(R.bool.isTablet);

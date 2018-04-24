@@ -85,10 +85,10 @@ public class ViewFactory implements RemoteViewsService.RemoteViewsFactory {
         // set text of listview item at corresponding position
         row.setTextViewText(android.R.id.text1, ingredientList.get(position).getIngredient());
 
-        Bundle bundle = new Bundle();
-        bundle.putString("recipe_name", recipeName);
-        Intent i = new Intent();
-        row.setOnClickFillInIntent(android.R.id.text1, i);
+//        Bundle bundle = new Bundle();
+//        bundle.putString("recipe_name", recipeName);
+//        Intent i = new Intent();
+//        row.setOnClickFillInIntent(android.R.id.text1, i);
 
         return (row);
     }
