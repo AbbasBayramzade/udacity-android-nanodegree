@@ -142,7 +142,6 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
         Step step = recipe.getSteps().get(descriptionNumber);
 
         if (!step.getVideoURL().isEmpty()){
-            // change visibility of an imageview
             initializePlayer(Uri.parse(step.getVideoURL()));
 
         } else {
