@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -153,14 +154,14 @@ public class StepDescriptionFragment extends Fragment implements ExoPlayer.Event
             if(recipe.getImage().isEmpty() && step.getThumbnailURL().isEmpty())
                 stepImage.setImageResource(R.drawable.ic_recipe_placeholer_image);
             else{
-                if(!step.getThumbnailURL().isEmpty())
+                if(!TextUtils.isEmpty(step.getThumbnailURL()))
                     Picasso.with(getContext())
                             .load(step.getThumbnailURL())
                             .placeholder(R.drawable.ic_recipe_placeholer_image)
                             .error(R.drawable.ic_recipe_placeholer_image)
                             .into(stepImage);
                 else{
-                    if(!recipe.getImage().isEmpty())
+                    if(!TextUtils.isEmpty(recipe.getImage()))
                         Picasso.with(getContext())
                                 .load(recipe.getImage())
                                 .placeholder(R.drawable.ic_recipe_placeholer_image)
