@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/androidLib/androidLib.iml" filepath="$PROJECT_DIR$/androidLib/androidLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/javaLib/javaLib.iml" filepath="$PROJECT_DIR$/javaLib/javaLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/javaLib/lib.iml" filepath="$PROJECT_DIR$/javaLib/lib.iml" />
     </modules>
   </component>
