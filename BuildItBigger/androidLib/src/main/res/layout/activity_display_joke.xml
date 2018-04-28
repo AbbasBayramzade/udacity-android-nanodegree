@@ -4,6 +4,12 @@
     android:id="@+id/joke_text"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:textAppearance="?android:textAppearanceLarge"
+    android:textStyle="bold"
+    android:padding="16dp"
+    android:gravity="center"
+    tools:text="Test"
     tools:context="com.ma.androidlib.DisplayJokeActivity">
 
 </TextView>
