@@ -48,11 +48,8 @@ public class MainActivity extends AppCompatActivity {
      * display it
      */
     public void tellJoke(View view) {
-        JokeProvider jokeProvider = new JokeProvider();
-        String joke = jokeProvider.tellAJoke();
-        Intent intent = new Intent(this, DisplayJokeActivity.class);
-        intent.putExtra("JOKE", joke);
-        startActivity(intent);
+        EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask(this);
+        endpointsAsyncTask.execute();
     }
 
 
