@@ -31,4 +31,4 @@ Multi-project build looks like this.
 
 ### App Screenshots
 
-See app screenshots [here](https://github.com/amatanat/udacity-android-nanodegree/tree/master/BuildItBigger/pic)
+See app screenshots [here](https://github.com/amatanat/udacity-android-nanodegree/tree/master/BuildItBigger/screenshots)
