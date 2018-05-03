@@ -3,4 +3,18 @@
     <string name="text_country_name">Country name</string>
     <string name="text_visited_period">Visited period</string>
     <string name="action_save">Save</string>
+
+    <string-array name="countries_array">
+        <item>Afghanistan</item>
+        <item>Albania</item>
+        <item>Algeria</item>
+        <item>Andorra</item>
+        <item>Angola</item>
+        <item>Anguilla</item>
+        <item>Antarctica</item>
+        <item>Azerbaijan</item>
+        <item>Germany</item>
+        <item>Italy</item>
+        <item>Spain</item>
+    </string-array>
 </resources>
