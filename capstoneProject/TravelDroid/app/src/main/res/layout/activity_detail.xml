@@ -32,16 +32,44 @@
         app:layout_constraintTop_toBottomOf="@+id/country_name_label"/>
 
     <TextView
-        android:id="@+id/country_name_label"
+        android:id="@+id/visited_period_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:padding="8dp"
-        android:text="@string/text_country_name"
+        android:text="@string/text_visited_period"
         android:textAppearance="?android:textAppearanceLarge"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/country_name_textview"/>
+
+
+    <AutoCompleteTextView
+        android:id="@+id/visited_period_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textColor="@color/colorPrimaryText"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/visited_period_label"/>
+
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_margin="8dp"
+        android:text="@string/action_save"
+        android:background="@color/darkPurple"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textAppearance="?android:textAppearanceLarge"
+        app:layout_constraintTop_toBottomOf="@id/visited_period_textview"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>
