@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TravelDroid</string>
+    <string name="text_country_name">Country name</string>
+</resources>
