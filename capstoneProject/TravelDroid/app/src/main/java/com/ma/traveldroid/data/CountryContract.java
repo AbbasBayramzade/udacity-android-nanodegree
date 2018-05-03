@@ -26,6 +26,8 @@ public class CountryContract {
 
         public static final String COLUMN_VISITED_PERIOD = "visited_period";
 
+        public static final String COLUMN_MAP_CONTEXT = "map_content";
+
         public static final String CONTENT_LIST_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_COUNTRIES;
 

@@ -13,8 +13,9 @@ public class CountryDbHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_COUNTRIES_TABLE =
             "CREATE TABLE " + CountryContract.CountryEntry.TABLE_NAME_COUNTRIES + " (" +
                     CountryContract.CountryEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    CountryContract.CountryEntry.COLUMN_COUNTRY_NAME + " TEXT NOT NULL, " +
-                    CountryContract.CountryEntry.COLUMN_VISITED_PERIOD + " TEXT NOT NULL, " + "));";
+                    CountryContract.CountryEntry.COLUMN_COUNTRY_NAME + " TEXT NOT NULL," +
+                    CountryContract.CountryEntry.COLUMN_VISITED_PERIOD + " TEXT," +
+                    CountryContract.CountryEntry.COLUMN_MAP_CONTEXT + " TEXT)";
 
     public CountryDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
