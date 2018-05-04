@@ -21,11 +21,15 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
     // butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    // recyclerview
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
 
     implementation 'com.google.android.gms:play-services-ads:15.0.0'
     implementation 'com.google.api-client:google-api-client:1.23.0'

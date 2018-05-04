@@ -107,7 +107,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 int updatedProductsRowNumber = getContentResolver().update(mContentUri, contentValues, null, null);
                 showToastMessage(updatedProductsRowNumber, "update");
             }
-            //finish();
+            finish();
         }
     }
 
