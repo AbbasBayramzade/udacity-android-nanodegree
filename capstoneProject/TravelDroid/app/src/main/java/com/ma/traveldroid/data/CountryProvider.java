@@ -12,9 +12,9 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
-public class CoutryProvider extends ContentProvider {
+public class CountryProvider extends ContentProvider {
 
-    private static final String LOG_TAG = CoutryProvider.class.getName();
+    private static final String LOG_TAG = CountryProvider.class.getName();
 
     // URI matcher code for the content uri for the table "countries"
     private static final int COUNTRIES = 1;
@@ -86,13 +86,13 @@ public class CoutryProvider extends ContentProvider {
         int match = mUriMatcher.match(uri);
         switch (match) {
             case COUNTRIES:
-                return insertProduct(uri, values);
+                return insertCountry(uri, values);
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
         }
     }
 
-    private Uri insertProduct(Uri uri, ContentValues values) {
+    private Uri insertCountry(Uri uri, ContentValues values) {
         sanityCheck(values);
 
         SQLiteDatabase db = mCoutryDbHelper.getWritableDatabase();

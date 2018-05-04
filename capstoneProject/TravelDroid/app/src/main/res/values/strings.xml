@@ -3,6 +3,13 @@
     <string name="text_country_name">Country name</string>
     <string name="text_visited_period">Visited period</string>
     <string name="action_save">Save</string>
+    <string name="addNewCountry">Add new country</string>
+    <string name="editCountry">Edit country data</string>
+    <string name="country_name_toast">Country name cannot be empty.</string>
+    <string name="error_in_inserting">Error in adding data.Please check your inputs.</string>
+    <string name="country_added">Country added successfully.</string>
+    <string name="country_failed">Failed to </string>
+    <string name="country_success">Country </string>
 
     <string-array name="countries_array">
         <item>Afghanistan</item>
