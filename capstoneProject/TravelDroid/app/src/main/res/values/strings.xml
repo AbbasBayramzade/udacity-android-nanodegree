@@ -11,6 +11,7 @@
     <string name="country_failed">Failed to </string>
     <string name="country_success">Country </string>
     <string name="text_countries">Countries</string>
+    <string name="text_right_arrow">Right arrow</string>
 
     <string-array name="countries_array">
         <item>Afghanistan</item>
