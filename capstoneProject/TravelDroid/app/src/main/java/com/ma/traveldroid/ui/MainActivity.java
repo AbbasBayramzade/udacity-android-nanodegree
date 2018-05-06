@@ -3,11 +3,15 @@ package com.ma.traveldroid.ui;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,14 +20,16 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.ma.traveldroid.R;
+import com.ma.traveldroid.data.CountryContract;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = MainActivity.class.getName();
     private static final int MY_PERMISSIONS_REQUEST_INTERNET = 100;
+    private static final int LOADER_INIT = 200;
 
     @BindView(R.id.countries_recyclerview)
     RecyclerView mCountriesRecyclerView;
@@ -40,8 +46,10 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         implementFloatingActionButtonClick();
-        
+
         checkInternetPermission();
+
+        getSupportLoaderManager().initLoader(LOADER_INIT, null, this);
     }
 
     private void checkInternetPermission() {
@@ -139,5 +147,28 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, content.substring(0, 350));
         Log.d(TAG, content);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String[] projection = {
+                CountryContract.CountryEntry._ID,
+                CountryContract.CountryEntry.COLUMN_COUNTRY_NAME,
+                CountryContract.CountryEntry.COLUMN_VISITED_PERIOD,
+                CountryContract.CountryEntry.COLUMN_MAP_CONTEXT
+        };
+
+        // This loader will execute ContentProvider's query method in a background thread
+        return new CursorLoader(this, CountryContract.CountryEntry.CONTENT_URI, projection, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }
