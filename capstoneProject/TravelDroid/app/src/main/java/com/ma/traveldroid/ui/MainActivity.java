@@ -1,6 +1,7 @@
 package com.ma.traveldroid.ui;
 
 import android.Manifest;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -13,6 +14,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -25,11 +28,14 @@ import com.ma.traveldroid.data.CountryContract;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+        MyRecyclerAdapter.ListItemClickListener {
 
     private static final String TAG = MainActivity.class.getName();
     private static final int MY_PERMISSIONS_REQUEST_INTERNET = 100;
     private static final int LOADER_INIT = 200;
+
+    private MyRecyclerAdapter mMyRecyclerAdapter;
 
     @BindView(R.id.countries_recyclerview)
     RecyclerView mCountriesRecyclerView;
@@ -44,6 +50,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        mCountriesRecyclerView.setLayoutManager(layoutManager);
+        mCountriesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        mMyRecyclerAdapter = new MyRecyclerAdapter(this, null,this);
+        mCountriesRecyclerView.setAdapter(mMyRecyclerAdapter);
 
         implementFloatingActionButtonClick();
 
@@ -164,11 +177,26 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        Log.i(TAG, "onLoadFinished");
+        mMyRecyclerAdapter = new MyRecyclerAdapter(this, data,this);
+        mCountriesRecyclerView.setAdapter(mMyRecyclerAdapter);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        Log.i(TAG,"onLoadReset");
+        mMyRecyclerAdapter.changeCursor(null);
+    }
 
+    @Override
+    public void onListItemClick(int clickedPosition) {
+        Log.i(TAG,"recyclerview item click: ");
+        Intent intent = new Intent(this, DetailActivity.class);
+
+            // send Content Uri with the id of the clicked item
+        intent.setData(ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI,clickedPosition));
+        Log.i(TAG, "passed content uri to DA: " +
+                ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI,clickedPosition));
+        startActivity(intent);
     }
 }
