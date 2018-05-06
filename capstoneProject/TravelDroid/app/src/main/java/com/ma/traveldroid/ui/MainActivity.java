@@ -1,8 +1,13 @@
 package com.ma.traveldroid.ui;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,6 +23,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName();
+    private static final int MY_PERMISSIONS_REQUEST_INTERNET = 100;
 
     @BindView(R.id.countries_recyclerview)
     RecyclerView mCountriesRecyclerView;
@@ -34,8 +40,48 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         implementFloatingActionButtonClick();
+        
+        checkInternetPermission();
+    }
 
-        // TODO check internet permission, if not granted request.
+    private void checkInternetPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.INTERNET)
+                != PackageManager.PERMISSION_GRANTED){
+
+            // permission is not granted :-> request it
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.INTERNET},
+                    MY_PERMISSIONS_REQUEST_INTERNET);
+            Log.i(TAG,"permission is not granted, requested");
+
+        }{
+            // permission granted :-> perform operation.
+            Log.i(TAG, "permission is granted");
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_INTERNET: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted
+
+                    // TODO get map content data from the database and display it
+                } else {
+                    // permission denied,
+                    // TODO display toast message and empty state view instead of map (image of map)
+                }
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
     }
 
     private void implementFloatingActionButtonClick() {

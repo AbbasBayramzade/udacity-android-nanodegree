@@ -86,6 +86,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
             //get content for the map
             String content = getContentForMap(countryName);
+
             ContentValues contentValues = new ContentValues();
             contentValues.put(CountryContract.CountryEntry.COLUMN_COUNTRY_NAME, countryName);
             contentValues.put(CountryContract.CountryEntry.COLUMN_VISITED_PERIOD, visitedPeriod);
