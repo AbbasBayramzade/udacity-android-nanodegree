@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -17,10 +18,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import com.ma.traveldroid.R;
 import com.ma.traveldroid.data.CountryContract;
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int LOADER_INIT = 200;
 
     private MyRecyclerAdapter mMyRecyclerAdapter;
+    private String mMapContent;
 
     @BindView(R.id.countries_recyclerview)
     RecyclerView mCountriesRecyclerView;
@@ -50,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        if(savedInstanceState != null)
+            mMapContent = savedInstanceState.getString("MAP_CONTENT");
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         mCountriesRecyclerView.setLayoutManager(layoutManager);
@@ -77,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             Log.i(TAG,"permission is not granted, requested");
 
         }{
-            // permission granted :-> perform operation.
+            // permission granted
             Log.i(TAG, "permission is granted");
         }
     }
@@ -93,15 +100,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted
 
-                    // TODO get map content data from the database and display it
                 } else {
                     // permission denied,
-                    // TODO display toast message and empty state view instead of map (image of map)
+                    // TODO display empty state view instead of map (image of map)
+                    Toast.makeText(this, "Internet permission is required in order to display a map",
+                            Toast.LENGTH_LONG).show();
                 }
             }
 
-            // other 'case' lines to check for other
-            // permissions this app might request.
         }
     }
 
@@ -115,60 +121,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
     }
 
-    private void setupWebView(String text) {
-        //TODO get content from the db.
-        String content = "<html>"
-                + "  <head>"
-                + "    <script type=\"text/javascript\" src=\"loader.js\"></script>"
-                + "    <script type=\"text/javascript\">"
-                + "      google.charts.load(\"upcoming\", {packages:[\"geochart\"]});"
-                + "      google.charts.setOnLoadCallback(drawRegionsMap);"
-                + "      function drawRegionsMap() {"
-                + "        var data = google.visualization.arrayToDataTable(["
-                + "          ['Country', 'Value'],"
-                + "          ['Azerbaijan',  0],"
-                + "          ['Georgia',  0],"
-                + "          ['Iran',  0],"
-                + "          ['Germany',  0],"
-                + "          ['Canada', 0],"
-                + "        ]);"
-                + "        var options = {"
-                + "          colorAxis: {values: [0, 1], "
-                + "colors: ['green', 'green']}," +
-                "backgroundColor: '#81d4fa'," +
-                "defaultColor: '#f5f5f5'," +
-                "datalessRegionColor: 'white'"
-                + "        };"
-                + "        var chart = new google.visualization.GeoChart(document.getElementById('geochart-colors'));"
-                + "        chart.draw(data, options);"
-                + "      }"
-                + "    </script>"
-                + "  </head>"
-                + "  <body>"
-                + "    <div id=\"geochart-colors\" style=\"width: 1000px; height: 600px;\"></div>"
-                + "  </body>" + "</html>";
-
-        content = content.substring(0, 350) + "['" + text + "'," + "0" + "]," +
-                content.substring(350, content.length());
-
-        WebSettings webSettings = mWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        mWebView.getSettings().setLoadWithOverviewMode(true);
-        mWebView.getSettings().setUseWideViewPort(true);
-        mWebView.requestFocusFromTouch();
-        mWebView.loadDataWithBaseURL("file:///android_asset/", content, "text/html", "utf-8", null);
-
-        Log.d(TAG, content.substring(0, 350));
-        Log.d(TAG, content);
-    }
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {
                 CountryContract.CountryEntry._ID,
                 CountryContract.CountryEntry.COLUMN_COUNTRY_NAME,
-                CountryContract.CountryEntry.COLUMN_VISITED_PERIOD,
-                CountryContract.CountryEntry.COLUMN_MAP_CONTEXT
+                CountryContract.CountryEntry.COLUMN_VISITED_PERIOD
         };
 
         // This loader will execute ContentProvider's query method in a background thread
@@ -176,16 +134,27 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Log.i(TAG, "onLoadFinished");
-        mMyRecyclerAdapter = new MyRecyclerAdapter(this, data,this);
-        mCountriesRecyclerView.setAdapter(mMyRecyclerAdapter);
+        if(cursor != null){
+            mMyRecyclerAdapter = new MyRecyclerAdapter(this, cursor,this);
+            mCountriesRecyclerView.setAdapter(mMyRecyclerAdapter);
+
+            while(cursor.moveToNext()){
+                int mapContentIndex = cursor.getColumnIndexOrThrow(CountryContract.CountryEntry.COLUMN_COUNTRY_NAME);
+                String countryName = cursor.getString(mapContentIndex);
+                Log.i(TAG, "country name: " + countryName);
+                generateMapContent(countryName);
+            }
+            setupWebView();
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         Log.i(TAG,"onLoadReset");
         mMyRecyclerAdapter.changeCursor(null);
+        mMapContent = "";
     }
 
     @Override
@@ -198,5 +167,55 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Log.i(TAG, "passed content uri to DA: " +
                 ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI,clickedPosition));
         startActivity(intent);
+    }
+
+    private void setupWebView() {
+
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        mWebView.getSettings().setLoadWithOverviewMode(true);
+        mWebView.getSettings().setUseWideViewPort(true);
+        mWebView.requestFocusFromTouch();
+        mWebView.loadDataWithBaseURL("file:///android_asset/", mMapContent, "text/html", "utf-8", null);
+    }
+
+    private void generateMapContent(String countryName) {
+        if (TextUtils.isEmpty(mMapContent)){
+            mMapContent = "<html>"
+                    + "  <head>"
+                    + "    <script type=\"text/javascript\" src=\"loader.js\"></script>"
+                    + "    <script type=\"text/javascript\">"
+                    + "      google.charts.load(\"upcoming\", {packages:[\"geochart\"]});"
+                    + "      google.charts.setOnLoadCallback(drawRegionsMap);"
+                    + "      function drawRegionsMap() {"
+                    + "        var data = google.visualization.arrayToDataTable(["
+                    + "          ['Country', 'Value'],"
+                    + "        ]);"
+                    + "        var options = {"
+                    + "          colorAxis: {values: [0, 1], "
+                    + "colors: ['green', 'green']}," +
+                    "backgroundColor: '#81d4fa',"+
+                    "defaultColor: '#f5f5f5'," +
+                    "datalessRegionColor: 'white'"
+                    + "        };"
+                    + "        var chart = new google.visualization.GeoChart(document.getElementById('geochart-colors'));"
+                    + "        chart.draw(data, options);"
+                    + "      }"
+                    + "    </script>"
+                    + "  </head>"
+                    + "  <body>"
+                    + "    <div id=\"geochart-colors\" style=\"width: 1000px; height: 600px;\"></div>"
+                    + "  </body>" + "</html>";
+        }
+        mMapContent = mMapContent.substring(0,350) +  "['" + countryName + "'," + "0" + "]," +
+                mMapContent.substring(350,mMapContent.length());
+        Log.i(TAG, "map content " + mMapContent);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("MAP_CONTENT", mMapContent);
+        Log.i(TAG, "onSaveInstanceState");
     }
 }

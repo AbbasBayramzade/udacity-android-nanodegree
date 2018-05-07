@@ -2,6 +2,7 @@ package com.ma.traveldroid.ui;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -9,7 +10,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.ma.traveldroid.R;
 import com.ma.traveldroid.data.CountryContract;
+import com.ma.traveldroid.data.CountryDbHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +30,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     private final int LOADER_INIT = 1;
     private Uri mContentUri;
-    private String mMapContent;
+    // private String mMapContent;
 
     @BindView(R.id.country_name_textview)
     AutoCompleteTextView mCountryName;
@@ -82,16 +83,15 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         if (TextUtils.isEmpty(countryName)) {
             Toast.makeText(this, R.string.country_name_toast, Toast.LENGTH_SHORT).show();
 
+        } else if(existsInDb(countryName)){
+            // if this country name is already added to the database
+            Toast.makeText(this, "You have already added this country.", Toast.LENGTH_SHORT).show();
         } else {
 
-            //get content for the map
-            String content = getContentForMap(countryName);
 
             ContentValues contentValues = new ContentValues();
             contentValues.put(CountryContract.CountryEntry.COLUMN_COUNTRY_NAME, countryName);
             contentValues.put(CountryContract.CountryEntry.COLUMN_VISITED_PERIOD, visitedPeriod);
-            contentValues.put(CountryContract.CountryEntry.COLUMN_MAP_CONTEXT, content);
-
 
             if (mContentUri == null) {
                 // if fab button is clicked then insert new product
@@ -112,44 +112,21 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         }
     }
 
-    private String getContentForMap(String countryName) {
-        if (TextUtils.isEmpty(mMapContent)){
-            mMapContent = "<html>"
-                    + "  <head>"
-                    + "    <script type=\"text/javascript\" src=\"loader.js\"></script>"
-                    + "    <script type=\"text/javascript\">"
-                    + "      google.charts.load(\"upcoming\", {packages:[\"geochart\"]});"
-                    + "      google.charts.setOnLoadCallback(drawRegionsMap);"
-                    + "      function drawRegionsMap() {"
-                    + "        var data = google.visualization.arrayToDataTable(["
-                    + "          ['Country', 'Value'],"
-//                    + "          ['Azerbaijan',  0],"
-//                    + "          ['Georgia',  0],"
-//                    + "          ['Iran',  0],"
-//                    + "          ['Germany',  0],"
-//                    + "          ['Canada', 0],"
-                    + "        ]);"
-                    + "        var options = {"
-                    + "          colorAxis: {values: [0, 1], "
-                    + "colors: ['green', 'green']}," +
-                    "backgroundColor: '#81d4fa',"+
-                    "defaultColor: '#f5f5f5'," +
-                    "datalessRegionColor: 'white'"
-                    + "        };"
-                    + "        var chart = new google.visualization.GeoChart(document.getElementById('geochart-colors'));"
-                    + "        chart.draw(data, options);"
-                    + "      }"
-                    + "    </script>"
-                    + "  </head>"
-                    + "  <body>"
-                    + "    <div id=\"geochart-colors\" style=\"width: 1000px; height: 600px;\"></div>"
-                    + "  </body>" + "</html>";
-        }
-        mMapContent = mMapContent.substring(0,350) +  "['" + countryName + "'," + "0" + "]," +
-                mMapContent.substring(350,mMapContent.length());
-        Log.d(TAG, "map content $$$$$$$$$$ " + mMapContent);
-        return mMapContent;
+    private boolean existsInDb(String countryName) {
+
+        CountryDbHelper countryDbHelper = new CountryDbHelper(this);
+
+        SQLiteDatabase db = countryDbHelper.getReadableDatabase();
+
+        String[] columns = {CountryContract.CountryEntry.COLUMN_COUNTRY_NAME};
+        String selection = CountryContract.CountryEntry.COLUMN_COUNTRY_NAME + " =?";
+        String[] selectionArgs = { countryName };
+        String limit = "1";
+
+        Cursor cursor = db.query(CountryContract.CountryEntry.TABLE_NAME_COUNTRIES, columns, selection, selectionArgs, null, null, null, limit);
+        return (cursor.getCount() > 0);
     }
+
 
     private void showToastMessage(int receivedRowNumber, String methodName) {
         if (receivedRowNumber == 0) {
@@ -176,8 +153,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         String[] projection = {
                 CountryContract.CountryEntry._ID,
                 CountryContract.CountryEntry.COLUMN_COUNTRY_NAME,
-                CountryContract.CountryEntry.COLUMN_VISITED_PERIOD,
-                CountryContract.CountryEntry.COLUMN_MAP_CONTEXT,
+                CountryContract.CountryEntry.COLUMN_VISITED_PERIOD
+               // CountryContract.CountryEntry.COLUMN_MAP_CONTENT_TITLE,
         };
         return new CursorLoader(this, mContentUri, projection, null, null, null);
     }
@@ -191,16 +168,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         if (cursor.moveToNext()) {
             int countryIndex = cursor.getColumnIndexOrThrow(CountryContract.CountryEntry.COLUMN_COUNTRY_NAME);
             int visitedPeriodIndex = cursor.getColumnIndexOrThrow(CountryContract.CountryEntry.COLUMN_VISITED_PERIOD);
-            int mapContentIndex = cursor.getColumnIndexOrThrow(CountryContract.CountryEntry.COLUMN_MAP_CONTEXT);
-
 
             String countryNameText = cursor.getString(countryIndex);
             String visitedPeriodText = cursor.getString(visitedPeriodIndex);
-            String mapContentText = cursor.getString(mapContentIndex);
 
             mCountryName.setText(countryNameText);
             mVisitedPeriod.setText(visitedPeriodText);
-            mMapContent  = mapContentText;
         }
     }
 
@@ -209,6 +182,5 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         // reset values
         mCountryName.setText("");
         mVisitedPeriod.setText("");
-        mMapContent="";
     }
 }

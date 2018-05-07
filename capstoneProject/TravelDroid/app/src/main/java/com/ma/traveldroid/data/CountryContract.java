@@ -13,12 +13,20 @@ public class CountryContract {
 
     public static final String PATH_COUNTRIES = "countries";
 
+ //   public static final String PATH_MAP_CONTENT = "map_content";
+
     private CountryContract(){}
 
     public static final class CountryEntry implements BaseColumns{
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_COUNTRIES);
 
+     //   public static final Uri CONTENT_URI_SONG = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_MAP_CONTENT);
+
         public static final String TABLE_NAME_COUNTRIES = "countries";
+
+    //    public static final String TABLE_NAME_MAP_CONTENT = "map_content";
+
+    //    public static final String COLUMN_MAP_CONTENT_TITLE = "title";
 
         public static final String _ID = BaseColumns._ID;
 
@@ -26,10 +34,13 @@ public class CountryContract {
 
         public static final String COLUMN_VISITED_PERIOD = "visited_period";
 
-        public static final String COLUMN_MAP_CONTEXT = "map_content";
+    //    public static final String COLUMN_MAP_CONTEXT = "map_content";
 
         public static final String CONTENT_LIST_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_COUNTRIES;
+
+//        public static final String CONTENT_MAP_CONTENT_LIST_TYPE =
+//                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MAP_CONTENT;
 
 
         public static final String CONTENT_COUNTRY_ITEM_TYPE =
