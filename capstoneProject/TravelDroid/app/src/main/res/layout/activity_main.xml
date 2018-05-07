@@ -1,67 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ui.MainActivity" >
-<android.support.constraint.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    tools:context=".ui.MainActivity">
 
-    <WebView
-        android:id="@+id/webview"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/info_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/webview"
-        tools:text="You have visited 30 countries" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/countries_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/darkPurple"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="@string/text_countries"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_textview" />
+            <WebView
+                android:id="@+id/webview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/countries_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:scrollbars="vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/countries_label" />
+            <TextView
+                android:id="@+id/info_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/webview"
+                tools:text="You have visited 30 countries" />
+
+            <TextView
+                android:id="@+id/countries_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/darkPurple"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/text_countries"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/info_textview" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/countries_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:scrollbars="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/countries_label" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_fab"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:src="@drawable/ic_fab" />
 
-</android.support.constraint.ConstraintLayout>
-</ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/emptyview_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            app:lottie_autoPlay="true" />
+
+        <TextView
+            android:id="@+id/emptyview_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/emptyview_image"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif"
+            android:paddingTop="8dp"
+            android:text="@string/text_start_by_adding_a_country"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            tools:ignore="UnusedAttribute" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

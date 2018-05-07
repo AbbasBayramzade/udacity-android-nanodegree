@@ -12,6 +12,7 @@
     <string name="country_success">Country </string>
     <string name="text_countries">Countries</string>
     <string name="text_right_arrow">Right arrow</string>
+    <string name="text_start_by_adding_a_country">Start by adding a country.</string>
 
     <string-array name="countries_array">
         <item>Afghanistan</item>

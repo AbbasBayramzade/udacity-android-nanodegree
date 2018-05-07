@@ -23,8 +23,12 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.ma.traveldroid.R;
 import com.ma.traveldroid.data.CountryContract;
 
@@ -45,8 +49,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     RecyclerView mCountriesRecyclerView;
     @BindView(R.id.webview)
     WebView mWebView;
+    @BindView(R.id.countries_label)
+    TextView mCountriesLabel;
     @BindView(R.id.fab)
     FloatingActionButton mFloatingActionButton;
+    @BindView(R.id.emptyview_image)
+    LottieAnimationView mLottieAnimationView;
+    @BindView(R.id.emptyview_subtitle)
+    TextView mEmptyViewText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +65,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        mLottieAnimationView.setAnimation("EmptyState.json");
+        mLottieAnimationView.loop(true);
+        mLottieAnimationView.playAnimation();
 
         if(savedInstanceState != null)
             mMapContent = savedInstanceState.getString("MAP_CONTENT");
@@ -147,6 +162,24 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 generateMapContent(countryName);
             }
             setupWebView();
+        }
+
+        checkVisibility();
+    }
+
+    private void checkVisibility() {
+        if(TextUtils.isEmpty(mMapContent)){
+            mCountriesRecyclerView.setVisibility(View.GONE);
+            mWebView.setVisibility(View.GONE);
+            mCountriesLabel.setVisibility(View.GONE);
+            mLottieAnimationView.setVisibility(View.VISIBLE);
+            mEmptyViewText.setVisibility(View.VISIBLE);
+        } else{
+            mCountriesRecyclerView.setVisibility(View.VISIBLE);
+            mWebView.setVisibility(View.VISIBLE);
+            mCountriesLabel.setVisibility(View.VISIBLE);
+            mLottieAnimationView.setVisibility(View.GONE);
+            mEmptyViewText.setVisibility(View.GONE);
         }
     }
 
