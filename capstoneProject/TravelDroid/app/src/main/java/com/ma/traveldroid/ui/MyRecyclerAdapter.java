@@ -18,20 +18,13 @@ import com.ma.traveldroid.data.CountryContract;
 
 public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.ViewHolder> {
 
-    public interface ListItemClickListener {
-        void onListItemClick(int clickedPosition);
-    }
-
     private static final String TAG = MyRecyclerAdapter.class.getName();
 
     private CursorAdapter mCursorAdapter;
     private Context mContext;
     private ViewHolder holder;
-    private ListItemClickListener mOnClickListener;
 
-
-    public MyRecyclerAdapter(Context context, Cursor c, ListItemClickListener listener){
-        mOnClickListener = listener;
+    public MyRecyclerAdapter(Context context, Cursor c){
         mContext = context;
         mCursorAdapter = new CursorAdapter(mContext, c, 0) {
 
@@ -86,13 +79,20 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
             super(itemView);
             itemView.setOnClickListener(this);
             countryName =  itemView.findViewById(R.id.country_name_textview);
+            countryName.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            int clickedPosition = this.getAdapterPosition();
-            Log.d(TAG," CLICKED POS: " + clickedPosition);
-            mOnClickListener.onListItemClick(clickedPosition);
+        Log.i(TAG,"recyclerview item click: ");
+        Intent intent = new Intent(mContext, DetailActivity.class);
+
+            // send Content Uri with the id of the clicked item
+        intent.setData(ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI, getAdapterPosition()+1));
+        Log.i(TAG, "passed content uri to DA: " +
+                ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI, getAdapterPosition()+1));
+        mContext.startActivity(intent);
+
         }
     }
 }

@@ -35,8 +35,8 @@ import com.ma.traveldroid.data.CountryContract;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-        MyRecyclerAdapter.ListItemClickListener {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
+        {
 
     private static final String TAG = MainActivity.class.getName();
     private static final int MY_PERMISSIONS_REQUEST_INTERNET = 100;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mCountriesRecyclerView.setLayoutManager(layoutManager);
         mCountriesRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mMyRecyclerAdapter = new MyRecyclerAdapter(this, null,this);
+        mMyRecyclerAdapter = new MyRecyclerAdapter(this, null);
         mCountriesRecyclerView.setAdapter(mMyRecyclerAdapter);
 
         implementFloatingActionButtonClick();
@@ -141,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         String[] projection = {
                 CountryContract.CountryEntry._ID,
                 CountryContract.CountryEntry.COLUMN_COUNTRY_NAME,
-                CountryContract.CountryEntry.COLUMN_VISITED_PERIOD
         };
 
         // This loader will execute ContentProvider's query method in a background thread
@@ -152,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Log.i(TAG, "onLoadFinished");
         if(cursor != null){
-            mMyRecyclerAdapter = new MyRecyclerAdapter(this, cursor,this);
+            mMyRecyclerAdapter = new MyRecyclerAdapter(this, cursor);
             mCountriesRecyclerView.setAdapter(mMyRecyclerAdapter);
 
             while(cursor.moveToNext()){
@@ -188,18 +187,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Log.i(TAG,"onLoadReset");
         mMyRecyclerAdapter.changeCursor(null);
         mMapContent = "";
-    }
-
-    @Override
-    public void onListItemClick(int clickedPosition) {
-        Log.i(TAG,"recyclerview item click: ");
-        Intent intent = new Intent(this, DetailActivity.class);
-
-            // send Content Uri with the id of the clicked item
-        intent.setData(ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI,clickedPosition));
-        Log.i(TAG, "passed content uri to DA: " +
-                ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI,clickedPosition));
-        startActivity(intent);
     }
 
     private void setupWebView() {

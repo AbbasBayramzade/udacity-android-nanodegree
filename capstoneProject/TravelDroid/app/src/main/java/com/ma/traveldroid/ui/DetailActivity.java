@@ -116,6 +116,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 // if fab button is clicked then insert new product
                 Uri insertedProductUri = getContentResolver().insert(CountryContract.CountryEntry.CONTENT_URI, contentValues);
 
+                Log.i(TAG, "inserted product uri: ^^^^^^^^^^^^^^ " + insertedProductUri);
                 if (insertedProductUri == null) {
                     Toast.makeText(this, R.string.error_in_inserting, Toast.LENGTH_SHORT).show();
                 } else {
