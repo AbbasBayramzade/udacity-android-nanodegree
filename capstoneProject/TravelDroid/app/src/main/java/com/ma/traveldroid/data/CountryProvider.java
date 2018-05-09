@@ -19,8 +19,6 @@ public class CountryProvider extends ContentProvider {
     // URI matcher code for the content uri for the table "countries"
     private static final int COUNTRIES = 1;
 
-    // private static final int MAP_CONTENT = 3;
-
     // URI matcher code for the content uri for the specific row for the table "countries"
     private static final int COUNTRIES_ID = 2;
 
@@ -29,14 +27,13 @@ public class CountryProvider extends ContentProvider {
     static {
         mUriMatcher.addURI(CountryContract.CONTENT_AUTHORITY, CountryContract.PATH_COUNTRIES, COUNTRIES);
         mUriMatcher.addURI(CountryContract.CONTENT_AUTHORITY, CountryContract.PATH_COUNTRIES + "/#", COUNTRIES_ID);
-     //   mUriMatcher.addURI(CountryContract.CONTENT_AUTHORITY, CountryContract.PATH_MAP_CONTENT, MAP_CONTENT);
     }
 
-    private CountryDbHelper mCoutryDbHelper;
+    private CountryDbHelper mCountryDbHelper;
 
     @Override
     public boolean onCreate() {
-        mCoutryDbHelper = new CountryDbHelper(getContext());
+        mCountryDbHelper = new CountryDbHelper(getContext());
         return true;
     }
 
@@ -46,7 +43,7 @@ public class CountryProvider extends ContentProvider {
                         String[] selectionArgs,  String sortOrder) {
 
         Cursor cursor;
-        SQLiteDatabase db = mCoutryDbHelper.getReadableDatabase();
+        SQLiteDatabase db = mCountryDbHelper.getReadableDatabase();
 
         int match = mUriMatcher.match(uri);
         switch (match) {
@@ -54,10 +51,6 @@ public class CountryProvider extends ContentProvider {
                 // query the whole "countries" table
                 cursor = db.query(CountryContract.CountryEntry.TABLE_NAME_COUNTRIES, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
-//            case MAP_CONTENT:
-//                // query the whole "songs" table
-//                cursor = db.query(CountryContract.CountryEntry.TABLE_NAME_MAP_CONTENT, projection, selection, selectionArgs, null, null, sortOrder);
-//                break;
             case COUNTRIES_ID:
                 // query specific id indicated in the uri
                 selection = CountryContract.CountryEntry._ID + "=?";
@@ -79,16 +72,13 @@ public class CountryProvider extends ContentProvider {
         switch (match) {
             case COUNTRIES:
                 return CountryContract.CountryEntry.CONTENT_LIST_TYPE;
-//            case MAP_CONTENT:
-//                return CountryContract.CountryEntry.CONTENT_MAP_CONTENT_LIST_TYPE;
             case COUNTRIES_ID:
-                return CountryContract.CountryEntry.CONTENT_COUNTRY_ITEM_TYPE;
+                return CountryContract.CountryEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new IllegalArgumentException("Illegal URI" + uri);
         }
     }
 
-    @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
 
@@ -96,35 +86,15 @@ public class CountryProvider extends ContentProvider {
         switch (match) {
             case COUNTRIES:
                 return insertCountry(uri, values);
-//            case MAP_CONTENT:
-//                return insertContent(uri, values);
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
         }
     }
 
-    /**
-     * Insert content into db
-     */
-//    private Uri insertContent(Uri uri, ContentValues values) {
-//
-//        SQLiteDatabase db = mCoutryDbHelper.getWritableDatabase();
-//        long id = db.insert(CountryContract.CountryEntry.TABLE_NAME_MAP_CONTENT, null, values);
-//
-//        if (id == -1) {
-//            Log.e(LOG_TAG, "Error in inserting a new row");
-//        } else {
-//            Log.i(LOG_TAG, "Row is inserted");
-//        }
-//
-//        getContext().getContentResolver().notifyChange(uri, null);
-//        return ContentUris.withAppendedId(uri, id);
-//    }
-
     private Uri insertCountry(Uri uri, ContentValues values) {
         sanityCheck(values);
 
-        SQLiteDatabase db = mCoutryDbHelper.getWritableDatabase();
+        SQLiteDatabase db = mCountryDbHelper.getWritableDatabase();
         long id = db.insert(CountryContract.CountryEntry.TABLE_NAME_COUNTRIES, null, values);
 
         if (id == -1) {
@@ -152,7 +122,7 @@ public class CountryProvider extends ContentProvider {
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
         int deletedRows;
-        SQLiteDatabase db = mCoutryDbHelper.getWritableDatabase();
+        SQLiteDatabase db = mCountryDbHelper.getWritableDatabase();
 
         int match = mUriMatcher.match(uri);
         switch (match) {
@@ -183,8 +153,6 @@ public class CountryProvider extends ContentProvider {
         switch (match) {
             case COUNTRIES:
                 return updateCountries(uri, values, selection, selectionArgs);
-//            case MAP_CONTENT:
-//                return updateMapContent(uri,values, selection, selectionArgs);
             case COUNTRIES_ID:
                 selection = CountryContract.CountryEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
@@ -193,24 +161,6 @@ public class CountryProvider extends ContentProvider {
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
         }
     }
-
-//    private int updateMapContent(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-//        if (values.size() == 0) {
-//            return 0;
-//        }
-//
-//        // get writeable databse
-//        SQLiteDatabase db = mCoutryDbHelper.getWritableDatabase();
-//
-//        // update db and return id of the updated row
-//        int updatedRow = db.update(CountryContract.CountryEntry.TABLE_NAME_MAP_CONTENT, values, selection, selectionArgs);
-//
-//        if (updatedRow != 0) {
-//            getContext().getContentResolver().notifyChange(uri, null);
-//        }
-//
-//        return updatedRow;
-//    }
 
     private int updateCountries(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
 
@@ -222,7 +172,7 @@ public class CountryProvider extends ContentProvider {
         }
 
         // get writeable databse
-        SQLiteDatabase db = mCoutryDbHelper.getWritableDatabase();
+        SQLiteDatabase db = mCountryDbHelper.getWritableDatabase();
 
         // update db and return id of the updated row
         int updatedRow = db.update(CountryContract.CountryEntry.TABLE_NAME_COUNTRIES, values, selection, selectionArgs);
