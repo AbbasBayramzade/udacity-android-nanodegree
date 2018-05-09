@@ -154,10 +154,6 @@ public class CountryProvider extends ContentProvider {
         int deletedRows;
         SQLiteDatabase db = mCoutryDbHelper.getWritableDatabase();
 
-
-        // TODO CHECK DELETE FOR MAP CONTENT
-
-
         int match = mUriMatcher.match(uri);
         switch (match) {
             case COUNTRIES:

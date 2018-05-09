@@ -90,8 +90,9 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
 
         @Override
         public void onClick(View v) {
-            int clickedPosition = getAdapterPosition();
-            mOnClickListener.onListItemClick(clickedPosition + 1);
+            int clickedPosition = this.getAdapterPosition();
+            Log.d(TAG," CLICKED POS: " + clickedPosition);
+            mOnClickListener.onListItemClick(clickedPosition);
         }
     }
 }
