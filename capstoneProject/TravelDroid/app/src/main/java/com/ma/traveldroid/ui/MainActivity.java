@@ -153,11 +153,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if(cursor != null){
             mMyRecyclerAdapter = new MyRecyclerAdapter(this, cursor);
             mCountriesRecyclerView.setAdapter(mMyRecyclerAdapter);
+            mMapContent = "";
 
             while(cursor.moveToNext()){
                 int mapContentIndex = cursor.getColumnIndexOrThrow(CountryContract.CountryEntry.COLUMN_COUNTRY_NAME);
                 String countryName = cursor.getString(mapContentIndex);
-                Log.i(TAG, "country name: " + countryName);
+                Log.i(TAG, "country name: *********** " + countryName);
                 generateMapContent(countryName);
             }
             setupWebView();
@@ -185,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         Log.i(TAG,"onLoadReset");
-        mMyRecyclerAdapter.changeCursor(null);
+        mMyRecyclerAdapter.swapCursor(null);
         mMapContent = "";
     }
 

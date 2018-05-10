@@ -46,9 +46,9 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         };
     }
 
-    public void changeCursor(Cursor cursor){
-        mCursorAdapter.changeCursor(cursor);
-        notifyDataSetChanged();
+    public void swapCursor(Cursor cursor){
+        mCursorAdapter.swapCursor(cursor);
+        mCursorAdapter.notifyDataSetChanged();
     }
 
 
@@ -79,7 +79,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
             super(itemView);
             itemView.setOnClickListener(this);
             countryName =  itemView.findViewById(R.id.country_name_textview);
-            countryName.setOnClickListener(this);
         }
 
         @Override
@@ -88,9 +87,9 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         Intent intent = new Intent(mContext, DetailActivity.class);
 
             // send Content Uri with the id of the clicked item
-        intent.setData(ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI, getAdapterPosition()+1));
+        intent.setData(ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI,  getAdapterPosition() + 1));
         Log.i(TAG, "passed content uri to DA: " +
-                ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI, getAdapterPosition()+1));
+                ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI, getAdapterPosition() + 1));
         mContext.startActivity(intent);
 
         }

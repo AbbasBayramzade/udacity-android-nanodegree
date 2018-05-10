@@ -100,7 +100,7 @@ public class CountryProvider extends ContentProvider {
         if (id == -1) {
             Log.e(LOG_TAG, "Error in inserting a new row");
         } else {
-            Log.i(LOG_TAG, "Row is inserted");
+            Log.i(LOG_TAG, "Row is inserted: " + id);
         }
 
         getContext().getContentResolver().notifyChange(uri, null);
