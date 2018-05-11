@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -23,8 +22,6 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +32,7 @@ import com.ma.traveldroid.data.CountryContract;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
-        {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = MainActivity.class.getName();
     private static final int MY_PERMISSIONS_REQUEST_INTERNET = 100;
@@ -79,6 +75,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         mMyRecyclerAdapter = new MyRecyclerAdapter(this, null);
         mCountriesRecyclerView.setAdapter(mMyRecyclerAdapter);
+
+        mCountriesRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+
+                        Toast.makeText(MainActivity.this, "clicked pos: " + position, Toast.LENGTH_SHORT).show();
+                        Log.i(TAG,"recyclerview item click: ");
+                        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+
+                        // send Content Uri with the id of the clicked item
+                        intent.setData(ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI,
+                                position+1));
+                        startActivity(intent);
+                    }
+                })
+        );
 
         implementFloatingActionButtonClick();
 
@@ -149,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        Log.i(TAG, "onLoadFinished");
+        Log.i(TAG, "onLoadFinished *************");
         if(cursor != null){
             mMyRecyclerAdapter = new MyRecyclerAdapter(this, cursor);
             mCountriesRecyclerView.setAdapter(mMyRecyclerAdapter);
@@ -158,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             while(cursor.moveToNext()){
                 int mapContentIndex = cursor.getColumnIndexOrThrow(CountryContract.CountryEntry.COLUMN_COUNTRY_NAME);
                 String countryName = cursor.getString(mapContentIndex);
-                Log.i(TAG, "country name: *********** " + countryName);
                 generateMapContent(countryName);
             }
             setupWebView();

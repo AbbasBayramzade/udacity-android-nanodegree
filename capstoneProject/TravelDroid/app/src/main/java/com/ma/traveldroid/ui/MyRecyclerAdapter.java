@@ -72,26 +72,12 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         return mCursorAdapter.getCount();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView countryName;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
             countryName =  itemView.findViewById(R.id.country_name_textview);
-        }
-
-        @Override
-        public void onClick(View v) {
-        Log.i(TAG,"recyclerview item click: ");
-        Intent intent = new Intent(mContext, DetailActivity.class);
-
-            // send Content Uri with the id of the clicked item
-        intent.setData(ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI,  getAdapterPosition() + 1));
-        Log.i(TAG, "passed content uri to DA: " +
-                ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI, getAdapterPosition() + 1));
-        mContext.startActivity(intent);
-
         }
     }
 }
