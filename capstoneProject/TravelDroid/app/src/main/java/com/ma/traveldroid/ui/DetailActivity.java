@@ -36,7 +36,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     private static final String TAG = DetailActivity.class.getName();
 
-    private final int LOADER_INIT = 1;
+    private final int LOADER_INIT = 200;
     private Uri mContentUri;
 
     @BindView(R.id.country_name_textview)
@@ -45,8 +45,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     EditText mVisitedPeriod;
     @BindView(R.id.save_button)
     Button mSave;
-
-    //TODO cannot get data at row 0
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

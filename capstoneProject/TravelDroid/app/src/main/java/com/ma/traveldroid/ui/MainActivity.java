@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int MY_PERMISSIONS_REQUEST_INTERNET = 100;
     private static final int LOADER_INIT = 200;
 
-    private MyRecyclerAdapter mMyRecyclerAdapter;
+   // private MyRecyclerAdapter mMyRecyclerAdapter;
+    private MyListCursorAdapter myListCursorAdapter;
     private String mMapContent;
 
     @BindView(R.id.countries_recyclerview)
@@ -73,8 +74,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mCountriesRecyclerView.setLayoutManager(layoutManager);
         mCountriesRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mMyRecyclerAdapter = new MyRecyclerAdapter(this, null);
-        mCountriesRecyclerView.setAdapter(mMyRecyclerAdapter);
+        //mMyRecyclerAdapter = new MyRecyclerAdapter(this, null);
+        myListCursorAdapter = new MyListCursorAdapter(null);
+        //mCountriesRecyclerView.setAdapter(mMyRecyclerAdapter);
+        mCountriesRecyclerView.setAdapter(myListCursorAdapter);
 
         mCountriesRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
@@ -87,7 +90,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                         // send Content Uri with the id of the clicked item
                         intent.setData(ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI,
-                                position+1));
+                                position));
+                        Log.w(TAG, "IN CLICK PASSED CONTENT URI: %%%%%%%%%%%%%%%%% " +
+                                ContentUris.withAppendedId(CountryContract.CountryEntry.CONTENT_URI,
+                                        position));
                         startActivity(intent);
                     }
                 })
@@ -154,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         String[] projection = {
                 CountryContract.CountryEntry._ID,
                 CountryContract.CountryEntry.COLUMN_COUNTRY_NAME,
+                CountryContract.CountryEntry.COLUMN_VISITED_PERIOD
         };
 
         // This loader will execute ContentProvider's query method in a background thread
@@ -163,9 +170,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Log.i(TAG, "onLoadFinished *************");
+        myListCursorAdapter.swapCursor(cursor);
+        //mCountriesRecyclerView.setAdapter(myListCursorAdapter);
         if(cursor != null){
-            mMyRecyclerAdapter = new MyRecyclerAdapter(this, cursor);
-            mCountriesRecyclerView.setAdapter(mMyRecyclerAdapter);
+//            mMyRecyclerAdapter = new MyRecyclerAdapter(this, cursor);
+//            mCountriesRecyclerView.setAdapter(mMyRecyclerAdapter);
             mMapContent = "";
 
             while(cursor.moveToNext()){
@@ -175,7 +184,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
             setupWebView();
         }
-
         checkVisibility();
     }
 
@@ -198,7 +206,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         Log.i(TAG,"onLoadReset");
-        mMyRecyclerAdapter.swapCursor(null);
+       // mMyRecyclerAdapter.swapCursor(null);
+        myListCursorAdapter.swapCursor(null);
         mMapContent = "";
     }
 
