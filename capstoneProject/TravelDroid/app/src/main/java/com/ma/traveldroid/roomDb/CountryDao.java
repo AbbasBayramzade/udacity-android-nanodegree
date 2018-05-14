@@ -27,4 +27,7 @@ public interface CountryDao {
 
     @Delete
     void deleteCountry(CountryEntry countryEntry);
+
+    @Query("SELECT * FROM country WHERE country_name = :name")
+    boolean dataExitsInDatabase(String name);
 }

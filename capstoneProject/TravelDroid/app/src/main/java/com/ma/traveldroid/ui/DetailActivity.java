@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -108,37 +109,46 @@ public class DetailActivity extends AppCompatActivity {
 
     private void saveCountry() {
 
-        String countryName = mCountryName.getText().toString().trim();
+        final String countryName = mCountryName.getText().toString().trim();
         String visitedPeriod = mVisitedPeriod.getText().toString().trim();
 
-        final CountryEntry countryEntry = new CountryEntry(countryName, visitedPeriod);
+        // check if country name is empty or not
+        // display toast message if it is empty
+        // otherwise save it in database
+        if(TextUtils.isEmpty(countryName))
+            Toast.makeText(this, getString(R.string.country_name_toast),Toast.LENGTH_LONG).show();
+        else {
 
-        // TODO before inserting into db check if already exists in db
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                if (mCountryId == DEFAULT_ID) {
-                    // insert new country into db
-                    mCountryDatabase.countryDao().insertCountry(countryEntry);
-                } else {
-                    //update country data in db
-                    countryEntry.setId(mCountryId);
-                    mCountryDatabase.countryDao().updateCoutry(countryEntry);
+            final CountryEntry countryEntry = new CountryEntry(countryName, visitedPeriod);
+
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    if (mCountryId == DEFAULT_ID) {
+                        // check if a user has already added this country into database
+                        boolean exitsInDatabase = mCountryDatabase.countryDao().dataExitsInDatabase(countryName);
+                        if(!exitsInDatabase)
+                            // insert new country into db
+                            mCountryDatabase.countryDao().insertCountry(countryEntry);
+                        else{
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // display toast message to the user
+                                    Toast.makeText(getApplicationContext(), getString(R.string.message_already_added_country),
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    } else {
+                        //update country data in db
+                        countryEntry.setId(mCountryId);
+                        mCountryDatabase.countryDao().updateCoutry(countryEntry);
+                    }
+                    finish();
                 }
-                finish();
-            }
-        });
-    }
-
-    //TODO
-    private boolean existsInDb(String countryName) {
-        return true;
-    }
-
-
-    private void showToastMessage(String methodName) {
-        Toast.makeText(this, getString(R.string.country_success) + " " + methodName + " success",
-                Toast.LENGTH_SHORT).show();
+            });
+        }
     }
 
     private void setupAutoCompleteTextView() {
