@@ -1,7 +1,10 @@
 package com.ma.traveldroid.ui;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -60,16 +63,13 @@ public class DetailActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(R.string.editCountry);
             if (mCountryId == DEFAULT_ID) {
                 mCountryId = intent.getIntExtra(EXTRA_ID, DEFAULT_ID);
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                final LiveData<CountryEntry> country = mCountryDatabase.countryDao().getCountryById(mCountryId);
+                country.observe(this, new Observer<CountryEntry>() {
                     @Override
-                    public void run() {
-                        final CountryEntry countryEntry = mCountryDatabase.countryDao().getCountryById(mCountryId);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateUI(countryEntry);
-                            }
-                        });
+                    public void onChanged(@Nullable CountryEntry countryEntry) {
+                        // we don't want to be informed on update, so remove observer
+                        country.removeObserver(this);
+                        updateUI(countryEntry);
                     }
                 });
             }

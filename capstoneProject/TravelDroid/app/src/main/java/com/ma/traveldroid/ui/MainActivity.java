@@ -1,10 +1,13 @@
 package com.ma.traveldroid.ui;
 
 import android.Manifest;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
 
     private static final String TAG = MainActivity.class.getName();
     private static final int MY_PERMISSIONS_REQUEST_INTERNET = 100;
+    private static final String KEY_MAP_CONTENT = "map_content";
     @BindView(R.id.countries_recyclerview)
     RecyclerView mCountriesRecyclerView;
     @BindView(R.id.webview)
@@ -52,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
     private CountryAdapter mAdapter;
     private String mMapContent;
     private CountryDatabase mCountryDatabase;
-    private List<CountryEntry> mCountryEntries;
+    private LiveData<List<CountryEntry>> mCountryEntries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +69,8 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
         mLottieAnimationView.loop(true);
         mLottieAnimationView.playAnimation();
 
-        if (savedInstanceState != null)
-            mMapContent = savedInstanceState.getString("MAP_CONTENT");
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_MAP_CONTENT))
+            mMapContent = savedInstanceState.getString(KEY_MAP_CONTENT);
         else
             mMapContent = "";
 
@@ -98,16 +102,16 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
                         int position = viewHolder.getAdapterPosition();
                         List<CountryEntry> countryEntries = mAdapter.getCountryEntries();
                         mCountryDatabase.countryDao().deleteCountry(countryEntries.get(position));
-                        getCountries();
                     }
                 });
             }
         }).attachToRecyclerView(mCountriesRecyclerView);
 
-
         implementFloatingActionButtonClick();
 
         checkInternetPermission();
+
+        getCountries();
     }
 
     private void checkInternetPermission() {
@@ -156,6 +160,30 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(KEY_MAP_CONTENT, mMapContent);
+        Log.i(TAG, "onSaveInstanceState");
+    }
+
+    public void getCountries() {
+        mCountryEntries = mCountryDatabase.countryDao().loadAllCountries();
+        mCountryEntries.observe(this, new Observer<List<CountryEntry>>() {
+            @Override
+            public void onChanged(@Nullable List<CountryEntry> countryEntries) {
+                mAdapter.setCountries(countryEntries);
+                mMapContent = "";
+                for (CountryEntry country : countryEntries) {
+                    generateMapContent(country.getCountryName());
+                }
+
+                setupWebView();
+                checkVisibility();
             }
         });
     }
@@ -218,43 +246,6 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
                 mMapContent.substring(350, mMapContent.length());
         Log.i(TAG, "map content " + mMapContent);
     }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("MAP_CONTENT", mMapContent);
-        Log.i(TAG, "onSaveInstanceState");
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getCountries();
-    }
-
-    public void getCountries() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                mCountryEntries = mCountryDatabase.countryDao().loadAllCountries();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mAdapter.setCountries(mCountryEntries);
-                        mMapContent = "";
-                        for (CountryEntry country : mCountryEntries) {
-                            generateMapContent(country.getCountryName());
-                        }
-
-                        setupWebView();
-                        checkVisibility();
-                    }
-                });
-            }
-        });
-    }
-
 
     @Override
     public void onItemClickListener(int itemId) {

@@ -1,5 +1,6 @@
 package com.ma.traveldroid.roomDb;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -13,10 +14,10 @@ import java.util.List;
 public interface CountryDao {
 
     @Query("SELECT * FROM country ORDER BY country_name")
-    List<CountryEntry> loadAllCountries();
+    LiveData<List<CountryEntry>> loadAllCountries();
 
     @Query("SELECT * FROM country WHERE id = :id")
-    CountryEntry getCountryById(int id);
+    LiveData<CountryEntry> getCountryById(int id);
 
     @Insert
     void insertCountry(CountryEntry countryEntry);
