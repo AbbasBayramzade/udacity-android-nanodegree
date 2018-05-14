@@ -2,6 +2,7 @@ package com.ma.traveldroid.ui;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -63,7 +64,9 @@ public class DetailActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(R.string.editCountry);
             if (mCountryId == DEFAULT_ID) {
                 mCountryId = intent.getIntExtra(EXTRA_ID, DEFAULT_ID);
-                final LiveData<CountryEntry> country = mCountryDatabase.countryDao().getCountryById(mCountryId);
+                DetailViewModelFactory factory = new DetailViewModelFactory(mCountryDatabase, mCountryId);
+                final DetailViewModel viewModel = ViewModelProviders.of(this, factory).get(DetailViewModel.class);
+                final LiveData<CountryEntry> country = viewModel.getCountry();
                 country.observe(this, new Observer<CountryEntry>() {
                     @Override
                     public void onChanged(@Nullable CountryEntry countryEntry) {
