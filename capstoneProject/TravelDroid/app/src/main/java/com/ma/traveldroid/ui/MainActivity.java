@@ -3,6 +3,7 @@ package com.ma.traveldroid.ui;
 import android.Manifest;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
 
         checkInternetPermission();
 
-        getCountries();
+        getCountriesAndUpdateUI();
     }
 
     private void checkInternetPermission() {
@@ -171,8 +172,9 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
         Log.i(TAG, "onSaveInstanceState");
     }
 
-    public void getCountries() {
-        mCountryEntries = mCountryDatabase.countryDao().loadAllCountries();
+    public void getCountriesAndUpdateUI() {
+        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mCountryEntries = viewModel.getCountries();
         mCountryEntries.observe(this, new Observer<List<CountryEntry>>() {
             @Override
             public void onChanged(@Nullable List<CountryEntry> countryEntries) {
