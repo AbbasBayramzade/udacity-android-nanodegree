@@ -1,4 +1,4 @@
-package com.ma.traveldroid.ui;
+package com.ma.traveldroid.ui.detail;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;

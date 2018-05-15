@@ -1,4 +1,4 @@
-package com.ma.traveldroid.ui;
+package com.ma.traveldroid.ui.detail;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.ma.traveldroid.R;
 import com.ma.traveldroid.roomDb.CountryDatabase;
 import com.ma.traveldroid.roomDb.CountryEntry;
+import com.ma.traveldroid.ui.AppExecutors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

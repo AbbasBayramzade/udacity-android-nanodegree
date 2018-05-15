@@ -1,4 +1,4 @@
-package com.ma.traveldroid.ui;
+package com.ma.traveldroid.ui.main;
 
 import android.Manifest;
 import android.arch.lifecycle.LiveData;
@@ -19,6 +19,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -29,6 +31,10 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.ma.traveldroid.R;
 import com.ma.traveldroid.roomDb.CountryDatabase;
 import com.ma.traveldroid.roomDb.CountryEntry;
+import com.ma.traveldroid.ui.AppExecutors;
+import com.ma.traveldroid.ui.detail.CountryAdapter;
+import com.ma.traveldroid.ui.detail.DetailActivity;
+import com.ma.traveldroid.ui.statistics.StatisticsActivity;
 
 import java.util.List;
 
@@ -253,6 +259,32 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
     public void onItemClickListener(int itemId) {
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_ID, itemId);
+        startActivity(intent);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_statistics_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.statistics:
+                int countriesCount = mAdapter.getCountryEntries().size();
+                Log.i(TAG,"total visited countries count: " + countriesCount);
+                launchStatisticsActivity(countriesCount);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void launchStatisticsActivity(int count) {
+        Intent intent = new Intent(MainActivity.this, StatisticsActivity.class);
+        intent.putExtra(StatisticsActivity.EXTRA_COUNT, count);
         startActivity(intent);
     }
 }

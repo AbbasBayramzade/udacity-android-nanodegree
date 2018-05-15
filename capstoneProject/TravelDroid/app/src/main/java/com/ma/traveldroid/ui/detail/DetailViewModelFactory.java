@@ -1,4 +1,4 @@
-package com.ma.traveldroid.ui;
+package com.ma.traveldroid.ui.detail;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;

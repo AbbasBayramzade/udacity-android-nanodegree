@@ -1,4 +1,4 @@
-package com.ma.traveldroid.ui;
+package com.ma.traveldroid.ui.detail;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
