@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightPurple"
     tools:context=".ui.statistics.StatisticsActivity">
 
     <LinearLayout
@@ -15,6 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textStyle="bold"
             tools:text="Visited 2" />
 
         <TextView
@@ -22,6 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textStyle="bold"
             android:text="@string/total_195" />
 
         <TextView
@@ -29,6 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textStyle="bold"
             tools:text="1.02%" />
 
 
