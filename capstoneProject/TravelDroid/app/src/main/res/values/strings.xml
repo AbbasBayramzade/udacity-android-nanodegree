@@ -20,6 +20,7 @@
     <string name="message_already_added_country">You have already added this country</string>
     <string name="statistics">Statistics</string>
     <string name="total_195">Total 195</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
 
     <string-array name="countries_array">

@@ -1,14 +1,15 @@
 package com.ma.traveldroid.ui.statistics;
 
 import android.content.Intent;
-import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.ma.traveldroid.R;
 
 import butterknife.BindView;
@@ -28,11 +29,14 @@ public class StatisticsActivity extends AppCompatActivity {
     TextView mPercentage;
     @BindView(R.id.pie_chart_wv)
     WebView mPieChart;
+    @BindView(R.id.adView)
+    AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // TODO create layout for tablets
         setContentView(R.layout.activity_statistics);
 
         ButterKnife.bind(this);
@@ -47,6 +51,11 @@ public class StatisticsActivity extends AppCompatActivity {
             Log.i(TAG,"countries count " + mCount);
         }
         updateUI();
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
     }
 
     private void updateUI() {
