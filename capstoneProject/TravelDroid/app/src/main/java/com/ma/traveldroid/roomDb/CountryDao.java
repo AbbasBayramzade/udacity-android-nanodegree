@@ -16,6 +16,9 @@ public interface CountryDao {
     @Query("SELECT * FROM country ORDER BY country_name")
     LiveData<List<CountryEntry>> loadAllCountries();
 
+    @Query("SELECT * FROM country ORDER BY country_name")
+    List<CountryEntry> getAllCountries();
+
     @Query("SELECT * FROM country WHERE id = :id")
     LiveData<CountryEntry> getCountryById(int id);
 

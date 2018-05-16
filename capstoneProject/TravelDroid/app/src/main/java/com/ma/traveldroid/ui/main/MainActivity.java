@@ -60,6 +60,9 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
     LottieAnimationView mLottieAnimationView;
     @BindView(R.id.emptyview_subtitle)
     TextView mEmptyViewText;
+    @BindView(R.id.info_textview)
+    TextView mInfo;
+
     private CountryAdapter mAdapter;
     private String mMapContent;
     private CountryDatabase mCountryDatabase;
@@ -181,19 +184,33 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
     public void getCountriesAndUpdateUI() {
         MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mCountryEntries = viewModel.getCountries();
-        mCountryEntries.observe(this, new Observer<List<CountryEntry>>() {
-            @Override
-            public void onChanged(@Nullable List<CountryEntry> countryEntries) {
-                mAdapter.setCountries(countryEntries);
-                mMapContent = "";
-                for (CountryEntry country : countryEntries) {
-                    generateMapContent(country.getCountryName());
-                }
-
-                setupWebView();
-                checkVisibility();
+        mCountryEntries.observe(this, countryEntries -> {
+            mAdapter.setCountries(countryEntries);
+            mMapContent = "";
+            for (CountryEntry country : countryEntries) {
+                generateMapContent(country.getCountryName());
             }
+
+            setupWebView();
+            checkVisibility();
+            updateInfoText(countryEntries.size());
         });
+    }
+
+    private void updateInfoText(int size) {
+        String ending;
+        if(size == 1)
+            ending = "country.";
+        else
+            ending = "countries";
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("You have visited");
+        stringBuilder.append(" ");
+        stringBuilder.append(size);
+        stringBuilder.append(" ");
+        stringBuilder.append(ending);
+        mInfo.setText(stringBuilder.toString());
     }
 
     private void checkVisibility() {
@@ -203,12 +220,14 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
             mCountriesLabel.setVisibility(View.GONE);
             mLottieAnimationView.setVisibility(View.VISIBLE);
             mEmptyViewText.setVisibility(View.VISIBLE);
+            mInfo.setVisibility(View.GONE);
         } else {
             mCountriesRecyclerView.setVisibility(View.VISIBLE);
             mWebView.setVisibility(View.VISIBLE);
             mCountriesLabel.setVisibility(View.VISIBLE);
             mLottieAnimationView.setVisibility(View.GONE);
             mEmptyViewText.setVisibility(View.GONE);
+            mInfo.setVisibility(View.VISIBLE);
         }
     }
 

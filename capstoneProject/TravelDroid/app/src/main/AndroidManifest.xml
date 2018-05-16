@@ -20,15 +20,30 @@
         </activity>
         <activity
             android:name=".ui.detail.DetailActivity"
-            android:parentActivityName=".ui.main.MainActivity"/>
+            android:parentActivityName=".ui.main.MainActivity" />
 
         <provider
             android:name=".data.CountryProvider"
             android:authorities="com.ma.traveldroid" />
 
-        <activity android:name=".ui.statistics.StatisticsActivity"
+        <activity
+            android:name=".ui.statistics.StatisticsActivity"
             android:label="Statistics"
-            android:parentActivityName=".ui.main.MainActivity"/>
+            android:parentActivityName=".ui.main.MainActivity" />
+
+        <receiver android:name=".CountryAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/country_app_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".ListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>
