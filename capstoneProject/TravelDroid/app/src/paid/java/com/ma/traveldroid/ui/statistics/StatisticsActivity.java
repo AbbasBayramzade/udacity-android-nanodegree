@@ -100,7 +100,7 @@ public class StatisticsActivity extends AppCompatActivity {
                 + "    </script>"
                 + "  </head>"
                 + "  <body>"
-                + "    <div id=\"piechart_3d\"></div>"
+                + "    <div id=\"piechart_3d\" style=\"width: 1000px; height: 600px;\"></div>"
                 + "  </body>" + "</html>";
 
         mChartContent = mChartContent.substring(0, 344)
