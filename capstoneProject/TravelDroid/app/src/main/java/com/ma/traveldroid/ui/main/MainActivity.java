@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
         String ending;
         if(size == 1)
             ending = "country.";
-        else
+        elsefa
             ending = "countries";
 
         StringBuilder stringBuilder = new StringBuilder();
