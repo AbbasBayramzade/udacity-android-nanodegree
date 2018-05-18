@@ -25,8 +25,6 @@ import butterknife.ButterKnife;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private static final String TAG = DetailActivity.class.getName();
-
     public static final String EXTRA_ID = "extra_id";
     public static final String COUNTRY_ID = "country_id";
 
@@ -93,12 +91,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void buttonClick() {
-        mSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveCountry();
-            }
-        });
+        mSave.setOnClickListener(v -> saveCountry());
     }
 
     @Override
@@ -122,32 +115,26 @@ public class DetailActivity extends AppCompatActivity {
 
             final CountryEntry countryEntry = new CountryEntry(countryName, visitedPeriod);
 
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    if (mCountryId == DEFAULT_ID) {
-                        // check if a user has already added this country into database
-                        boolean exitsInDatabase = mCountryDatabase.countryDao().dataExitsInDatabase(countryName);
-                        if(!exitsInDatabase)
-                            // insert new country into db
-                            mCountryDatabase.countryDao().insertCountry(countryEntry);
-                        else{
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // display toast message to the user
-                                    Toast.makeText(getApplicationContext(), getString(R.string.message_already_added_country),
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    } else {
-                        //update country data in db
-                        countryEntry.setId(mCountryId);
-                        mCountryDatabase.countryDao().updateCoutry(countryEntry);
+            AppExecutors.getInstance().diskIO().execute(() -> {
+                if (mCountryId == DEFAULT_ID) {
+                    // check if a user has already added this country into database
+                    boolean exitsInDatabase = mCountryDatabase.countryDao().dataExitsInDatabase(countryName);
+                    if(!exitsInDatabase)
+                        // insert new country into db
+                        mCountryDatabase.countryDao().insertCountry(countryEntry);
+                    else{
+                        runOnUiThread(() -> {
+                            // display toast message to the user
+                            Toast.makeText(getApplicationContext(), getString(R.string.message_already_added_country),
+                                    Toast.LENGTH_SHORT).show();
+                        });
                     }
-                    finish();
+                } else {
+                    //update country data in db
+                    countryEntry.setId(mCountryId);
+                    mCountryDatabase.countryDao().updateCoutry(countryEntry);
                 }
+                finish();
             });
         }
     }
