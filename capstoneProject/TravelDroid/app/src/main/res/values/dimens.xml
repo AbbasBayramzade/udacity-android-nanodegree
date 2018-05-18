@@ -7,4 +7,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     -->
     <dimen name="widget_margin">8dp</dimen>
 
+    <dimen name="statistics_padding">8dp</dimen>
+
 </resources>

@@ -1,60 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/lightPurple"
     tools:context=".ui.statistics.StatisticsActivity">
 
-<android.support.constraint.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <WebView
-        android:id="@+id/pie_chart_wv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/pie_chart_wv"
-        app:layout_constraintLeft_toLeftOf="parent">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/visited_countries"
+        <WebView
+            android:id="@+id/pie_chart_wv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:textStyle="bold"
-            tools:text="Visited 2" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/total_countries"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:textStyle="bold"
-            android:text="@string/total_195" />
+            android:orientation="vertical"
+            android:padding="@dimen/statistics_padding"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pie_chart_wv">
 
-        <TextView
-            android:id="@+id/percentage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:textStyle="bold"
-            tools:text="1.02%" />
+            <TextView
+                android:id="@+id/visited_countries"
+                style="@style/statistics_style"
+                tools:text="Visited 2" />
+
+            <TextView
+                android:id="@+id/total_countries"
+                style="@style/statistics_style"
+                android:text="@string/total_195" />
+
+            <TextView
+                android:id="@+id/percentage"
+                style="@style/statistics_style"
+                tools:text="1.02%" />
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
 </ScrollView>

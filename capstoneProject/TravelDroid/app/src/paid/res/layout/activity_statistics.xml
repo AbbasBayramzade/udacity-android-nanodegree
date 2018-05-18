@@ -13,29 +13,17 @@
 
         <TextView
             android:id="@+id/visited_countries"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:textStyle="bold"
+            style="@style/statistics_style"
             tools:text="Visited 2" />
 
         <TextView
             android:id="@+id/total_countries"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:textStyle="bold"
+            style="@style/statistics_style"
             android:text="@string/total_195" />
 
         <TextView
             android:id="@+id/percentage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:textStyle="bold"
+            style="@style/statistics_style"
             tools:text="1.02%" />
 
 
@@ -43,8 +31,6 @@
 
     <WebView
         android:id="@+id/pie_chart_wv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        style="@style/webview_style" />
 
 </RelativeLayout>
