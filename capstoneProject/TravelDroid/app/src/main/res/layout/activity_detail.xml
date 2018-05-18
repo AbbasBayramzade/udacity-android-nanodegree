@@ -13,50 +13,28 @@
 
         <TextView
             android:id="@+id/country_name_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:padding="8dp"
+            style="@style/detail_label_style"
             android:text="@string/text_country_name"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:textColor="@color/white"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <AutoCompleteTextView
             android:id="@+id/country_name_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:padding="8dp"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:textColor="@color/colorPrimaryText"
+            style="@style/detail_edit_style"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/country_name_label" />
 
         <TextView
             android:id="@+id/visited_period_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:padding="8dp"
+            style="@style/detail_label_style"
             android:text="@string/text_visited_period"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:textColor="@color/white"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/country_name_textview" />
 
 
         <EditText
             android:id="@+id/visited_period_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:padding="8dp"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:textColor="@color/colorPrimaryText"
+            style="@style/detail_edit_style"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/visited_period_label" />
 
@@ -65,9 +43,9 @@
             android:id="@+id/save_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/detail_margin"
             android:background="@color/darkPurple"
-            android:padding="8dp"
+            android:padding="@dimen/detail_padding"
             android:text="@string/action_save"
             android:textAppearance="?android:textAppearanceLarge"
             android:textColor="@color/white"
