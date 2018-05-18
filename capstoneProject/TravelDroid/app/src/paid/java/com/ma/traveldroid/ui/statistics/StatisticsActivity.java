@@ -32,7 +32,6 @@ public class StatisticsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO create layout for tablets
         setContentView(R.layout.activity_statistics);
 
         ButterKnife.bind(this);

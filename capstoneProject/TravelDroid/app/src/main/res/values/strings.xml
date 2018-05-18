@@ -38,4 +38,6 @@
     </string-array>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="message_internet_permission">Internet permission is required in order to display a world map</string>
+    <string name="text_country">country.</string>
 </resources>

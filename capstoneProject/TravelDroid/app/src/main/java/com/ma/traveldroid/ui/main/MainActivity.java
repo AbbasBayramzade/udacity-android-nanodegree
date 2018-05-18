@@ -2,13 +2,11 @@ package com.ma.traveldroid.ui.main;
 
 import android.Manifest;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -18,7 +16,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +39,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.widget.LinearLayout.VERTICAL;
+
+/**
+ * Created by amatanat.
+ */
 
 public class MainActivity extends AppCompatActivity implements CountryAdapter.ItemClickListener {
 
@@ -133,12 +134,7 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.INTERNET},
                     MY_PERMISSIONS_REQUEST_INTERNET);
-            Log.i(TAG, "permission is not granted, requested");
 
-        }
-        {
-            // permission granted
-            Log.i(TAG, "permission is granted");
         }
     }
 
@@ -155,8 +151,7 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
 
                 } else {
                     // permission denied,
-                    // TODO display empty state view instead of map (image of map)
-                    Toast.makeText(this, "Internet permission is required in order to display a map",
+                    Toast.makeText(this, R.string.message_internet_permission,
                             Toast.LENGTH_LONG).show();
                 }
             }
@@ -178,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(KEY_MAP_CONTENT, mMapContent);
-        Log.i(TAG, "onSaveInstanceState");
     }
 
     public void getCountriesAndUpdateUI() {
@@ -200,17 +194,16 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
     private void updateInfoText(int size) {
         String ending;
         if(size == 1)
-            ending = "country.";
-        elsefa
-            ending = "countries";
+            ending = getString(R.string.text_country);
+        else
+            ending =getString(R.string.text_countries);
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("You have visited");
-        stringBuilder.append(" ");
-        stringBuilder.append(size);
-        stringBuilder.append(" ");
-        stringBuilder.append(ending);
-        mInfo.setText(stringBuilder.toString());
+        String text = "You have visited" +
+                " " +
+                size +
+                " " +
+                ending;
+        mInfo.setText(text);
     }
 
     private void checkVisibility() {
@@ -271,7 +264,6 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
         }
         mMapContent = mMapContent.substring(0, 350) + "['" + countryName + "'," + "0" + "]," +
                 mMapContent.substring(350, mMapContent.length());
-        Log.i(TAG, "map content " + mMapContent);
     }
 
     @Override
@@ -293,7 +285,6 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
         switch (item.getItemId()){
             case R.id.statistics:
                 int countriesCount = mAdapter.getCountryEntries().size();
-                Log.i(TAG,"total visited countries count: " + countriesCount);
                 launchStatisticsActivity(countriesCount);
                 return true;
             default:
