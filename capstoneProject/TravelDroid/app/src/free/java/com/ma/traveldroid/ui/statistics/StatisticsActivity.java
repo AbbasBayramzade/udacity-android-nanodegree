@@ -3,7 +3,6 @@ package com.ma.traveldroid.ui.statistics;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -17,7 +16,6 @@ import butterknife.ButterKnife;
 
 public class StatisticsActivity extends AppCompatActivity {
 
-    public static final String TAG = StatisticsActivity.class.getName();
     public static final String EXTRA_COUNT = "extra_count";
 
     private int mCount;
@@ -47,7 +45,6 @@ public class StatisticsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent != null && intent.hasExtra(EXTRA_COUNT)){
             mCount = intent.getIntExtra(EXTRA_COUNT,0);
-            Log.i(TAG,"countries count " + mCount);
         }
         updateUI();
 
@@ -70,7 +67,6 @@ public class StatisticsActivity extends AppCompatActivity {
         else{
             float percent = (mCount * 100.0f) / 195;
             String s = String.format("%.2f", percent);
-            Log.i(TAG, "percentage " + percent);
             stringBuilder.append(s);
             stringBuilder.append("%");
             mPercentage.setText(stringBuilder.toString());
@@ -115,8 +111,6 @@ public class StatisticsActivity extends AppCompatActivity {
                 + "['" + "Visited" + "'," + mCount + "]," +
                 "['" + "Remains" + "'," + (195 - mCount) + "]," +
                 mChartContent.substring(344, mChartContent.length());
-        Log.i(TAG, "map content " + mChartContent);
-
     }
 
     private void setupWebView() {
