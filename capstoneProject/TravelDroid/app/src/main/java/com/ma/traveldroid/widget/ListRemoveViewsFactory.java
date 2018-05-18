@@ -1,14 +1,14 @@
-package com.ma.traveldroid;
+package com.ma.traveldroid.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.ma.traveldroid.R;
 import com.ma.traveldroid.roomDb.CountryDao;
 import com.ma.traveldroid.roomDb.CountryDatabase;
 import com.ma.traveldroid.roomDb.CountryEntry;
@@ -19,8 +19,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ListRemoveViewsFactory implements RemoteViewsService.RemoteViewsFactory {
-
-    private static final String TAG = ListRemoveViewsFactory.class.getName();
 
     private Context mContext;
     private List<CountryEntry> mCountriesList = new ArrayList<>();
@@ -62,9 +60,6 @@ public class ListRemoveViewsFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public int getCount() {
-
-        Log.d(TAG,
-                "countries: " + mCountriesList.size());
         return mCountriesList.size();
     }
 
@@ -72,9 +67,6 @@ public class ListRemoveViewsFactory implements RemoteViewsService.RemoteViewsFac
     public RemoteViews getViewAt(int position) {
         RemoteViews row = new RemoteViews(mContext.getPackageName(),
                 R.layout.row);
-        Log.d(TAG,
-                "text in getViewAt: " + mCountriesList.get(position).getCountryName());
-
         // set text of listview item at corresponding position
         row.setTextViewText(android.R.id.text1, mCountriesList.get(position).getCountryName());
 
@@ -113,7 +105,6 @@ public class ListRemoveViewsFactory implements RemoteViewsService.RemoteViewsFac
 
         @Override
         protected List<CountryEntry> doInBackground(Void... voids) {
-            Log.v(TAG, "doinBackground call ***********");
             CountryDatabase database = CountryDatabase.getInstance(context);
             CountryDao dao = database.countryDao();
             return dao.getAllCountries();

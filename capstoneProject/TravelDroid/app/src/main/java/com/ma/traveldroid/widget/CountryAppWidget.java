@@ -1,6 +1,5 @@
-package com.ma.traveldroid;
+package com.ma.traveldroid.widget;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.ma.traveldroid.R;
-import com.ma.traveldroid.ui.main.MainActivity;
 
 /**
  * Implementation of App Widget functionality.
@@ -29,7 +27,7 @@ public class CountryAppWidget extends AppWidgetProvider {
             RemoteViews widget = new RemoteViews(context.getPackageName(),
                     R.layout.country_app_widget);
 
-            widget.setTextViewText(R.id.widget_tv, "Visited countries");
+            widget.setTextViewText(R.id.widget_tv, context.getString(R.string.widget_title));
 
             widget.setRemoteAdapter(appWidgetId, R.id.words,
                     svcIntent);

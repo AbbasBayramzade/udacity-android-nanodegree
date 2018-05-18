@@ -1,4 +1,4 @@
-package com.ma.traveldroid;
+package com.ma.traveldroid.widget;
 
 import android.content.Intent;
 import android.widget.RemoteViewsService;

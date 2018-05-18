@@ -40,15 +40,7 @@ public class CountryEntry {
         return countryName;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
-    }
-
     public String getVisitedPeriod() {
         return visitedPeriod;
-    }
-
-    public void setVisitedPeriod(String visitedPeriod) {
-        this.visitedPeriod = visitedPeriod;
     }
 }
