@@ -23,6 +23,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.ma.traveldroid.R;
@@ -63,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
     TextView mEmptyViewText;
     @BindView(R.id.info_textview)
     TextView mInfo;
+//    @BindView(R.id.toolbar)
+//    Toolbar mToolbar;
 
     private CountryAdapter mAdapter;
     private String mMapContent;
@@ -75,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+       // setSupportActionBar(mToolbar);
 
         mLottieAnimationView.setAnimation("EmptyState.json");
         mLottieAnimationView.loop(true);

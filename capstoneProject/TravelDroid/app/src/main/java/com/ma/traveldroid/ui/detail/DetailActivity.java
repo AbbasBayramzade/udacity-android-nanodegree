@@ -14,6 +14,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.ma.traveldroid.R;
 import com.ma.traveldroid.roomDb.CountryDatabase;
@@ -40,6 +41,8 @@ public class DetailActivity extends AppCompatActivity {
     EditText mVisitedPeriod;
     @BindView(R.id.save_button)
     Button mSave;
+//    @BindView(R.id.toolbar)
+//    Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         ButterKnife.bind(this);
+        //setSupportActionBar(mToolbar);
 
         if (savedInstanceState != null && savedInstanceState.containsKey(COUNTRY_ID)) {
             mCountryId = savedInstanceState.getInt(COUNTRY_ID, DEFAULT_ID);
