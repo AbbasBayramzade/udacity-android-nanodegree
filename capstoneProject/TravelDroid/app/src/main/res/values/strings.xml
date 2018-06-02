@@ -41,4 +41,5 @@
     <string name="message_internet_permission">Internet permission is required in order to display a world map</string>
     <string name="text_country">country.</string>
     <string name="widget_title">Visited countries</string>
+    <string name="description_fab">Button for adding a new country.</string>
 </resources>

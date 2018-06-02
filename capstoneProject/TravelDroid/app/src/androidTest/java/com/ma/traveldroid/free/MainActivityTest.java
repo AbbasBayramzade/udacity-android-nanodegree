@@ -1,9 +1,8 @@
 package com.ma.traveldroid.free;
 
-import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
-import android.support.test.runner.AndroidJUnit4;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.ma.traveldroid.R;
 import com.ma.traveldroid.ui.main.MainActivity;

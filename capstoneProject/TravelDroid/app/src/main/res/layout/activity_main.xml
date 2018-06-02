@@ -41,7 +41,7 @@
                 android:layout_margin="@dimen/main_margin"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_container" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/info_textview"
@@ -91,7 +91,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/main_margin"
-        android:src="@drawable/ic_fab" />
+        android:src="@drawable/ic_fab"
+        android:contentDescription="@string/description_fab"/>
 
 
     <RelativeLayout

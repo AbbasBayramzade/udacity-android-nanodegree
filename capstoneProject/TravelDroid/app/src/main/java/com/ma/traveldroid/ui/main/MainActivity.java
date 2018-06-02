@@ -23,7 +23,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.ma.traveldroid.R;
@@ -111,13 +110,10 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 //implement swipe to delete
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        int position = viewHolder.getAdapterPosition();
-                        List<CountryEntry> countryEntries = mAdapter.getCountryEntries();
-                        mCountryDatabase.countryDao().deleteCountry(countryEntries.get(position));
-                    }
+                AppExecutors.getInstance().diskIO().execute(() -> {
+                    int position = viewHolder.getAdapterPosition();
+                    List<CountryEntry> countryEntries = mAdapter.getCountryEntries();
+                    mCountryDatabase.countryDao().deleteCountry(countryEntries.get(position));
                 });
             }
         }).attachToRecyclerView(mCountriesRecyclerView);
@@ -164,12 +160,9 @@ public class MainActivity extends AppCompatActivity implements CountryAdapter.It
     }
 
     private void implementFloatingActionButtonClick() {
-        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                startActivity(intent);
-            }
+        mFloatingActionButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+            startActivity(intent);
         });
     }
 
