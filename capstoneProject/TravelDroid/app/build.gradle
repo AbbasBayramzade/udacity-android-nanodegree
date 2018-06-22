@@ -57,6 +57,7 @@ android {
 dependencies {
     def room_version = "1.1.0"
     def lifecycle_version = "1.1.1"
+    def nav_version = "1.0.0-alpha02"
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
@@ -72,6 +73,9 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     //lottie animation view
     implementation 'com.airbnb.android:lottie:2.1.0'
+    // navigation architecture component
+    implementation "android.arch.navigation:navigation-fragment:$nav_version"
+    implementation "android.arch.navigation:navigation-ui:$nav_version"
     freeImplementation 'com.google.android.gms:play-services-ads:15.0.1'
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
     implementation 'com.google.api-client:google-api-client:1.23.0'
